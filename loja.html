@@ -293,30 +293,30 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
 
   .product-grid{
     display:grid;
-    grid-template-columns:repeat(5, 1fr);
-    gap:28px 20px;
+    grid-template-columns:repeat(6, 1fr);
+    gap:22px 14px;
   }
 
   @media (max-width:1100px){
-    .product-grid{grid-template-columns:repeat(3, 1fr);}
+    .product-grid{grid-template-columns:repeat(4, 1fr);}
   }
   @media (max-width:640px){
     .product-grid{grid-template-columns:repeat(1, 1fr);}
   }
 
   .product-card{
-    text-align:center;
-    background:var(--off-white);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:16px;
-    box-shadow:0 2px 10px rgba(20,45,41,0.06);
+    text-align:left;
+    background:transparent;
+    border:none;
+    border-radius:0;
+    padding:0;
+    box-shadow:none;
   }
 
   .product-rating{
     display:flex;
     align-items:center;
-    justify-content:center;
+    justify-content:flex-start;
     flex-wrap:wrap;
     gap:5px;
     margin-bottom:6px;
@@ -324,22 +324,21 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
 
   .product-rating .stars{
     color:var(--gold);
-    font-size:11px;
+    font-size:12px;
     letter-spacing:1px;
   }
 
   .product-rating .rating-note{
-    font-size:9px;
+    font-size:10px;
     color:#9a9a9a;
   }
 
   .product-options-panel{
     display:none;
     flex-direction:column;
-    align-items:center;
+    align-items:flex-start;
     margin-top:10px;
     padding-top:10px;
-    border-top:1px dashed var(--border);
   }
 
   .product-options-panel.open{
@@ -348,12 +347,13 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
 
   .btn-continuar{
     margin-top:10px;
-    font-size:9px;
+    width:100%;
+    font-size:10px;
     font-weight:700;
     letter-spacing:0.3px;
     text-transform:uppercase;
-    padding:10px 24px;
-    border-radius:20px;
+    padding:12px 24px;
+    border-radius:0;
     background:var(--gold);
     color:var(--green);
     border:1px solid var(--gold);
@@ -365,8 +365,8 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     width:100%;
     aspect-ratio: 1 / 1;
     background:var(--placeholder-bg);
-    border:1px dashed var(--border);
-    border-radius:10px;
+    border:none;
+    border-radius:0;
     margin-bottom:14px;
     overflow:hidden;
   }
@@ -407,14 +407,14 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   }
 
   .product-name{
-    font-size:13px;
+    font-size:14px;
     font-weight:600;
     color:var(--green);
     margin-bottom:6px;
   }
 
   .product-desc{
-    font-size:9.5px;
+    font-size:10.5px;
     line-height:1.4;
     color:var(--teal-muted);
     margin-bottom:6px;
@@ -432,7 +432,7 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   }
 
   .product-price{
-    font-size:13px;
+    font-size:14px;
     color:var(--gold);
     font-weight:700;
   }
@@ -440,31 +440,31 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   .product-price-wrap{
     display:flex;
     align-items:baseline;
-    justify-content:center;
+    justify-content:flex-start;
     gap:6px;
   }
 
   .product-price-original{
-    font-size:11px;
+    font-size:12px;
     color:#9a9a9a;
     text-decoration:line-through;
   }
 
   .product-actions{
     display:flex;
-    justify-content:center;
-    gap:8px;
-    margin-top:12px;
+    justify-content:flex-start;
+    margin-top:10px;
   }
 
   .product-actions button{
-    flex:none;
-    font-size:9px;
+    flex:1;
+    width:100%;
+    font-size:10px;
     font-weight:700;
     letter-spacing:0.3px;
     text-transform:uppercase;
-    padding:10px 20px;
-    border-radius:20px;
+    padding:12px 20px;
+    border-radius:0;
     cursor:default;
   }
 
@@ -674,7 +674,7 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   .color-row{
     display:flex;
     gap:6px;
-    justify-content:center;
+    justify-content:flex-start;
     flex-wrap:wrap;
     margin-bottom:6px;
   }
@@ -701,17 +701,17 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   .size-row{
     display:flex;
     gap:5px;
-    justify-content:center;
+    justify-content:flex-start;
     flex-wrap:wrap;
   }
 
   .size-btn{
-    font-size:11px;
+    font-size:12px;
     padding:5px 10px;
     border:1px solid var(--green);
     background:var(--white);
     color:var(--green);
-    border-radius:14px;
+    border-radius:0;
     cursor:pointer;
   }
 
@@ -1773,7 +1773,12 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
           ${tag}
           ${slider}
         </div>
+        ${cores ? `<div class="color-row">${cores}</div>` : ''}
         <div class="product-name">${p.nome}</div>
+        <div class="product-price-wrap">
+          ${p.precoOriginal ? `<span class="product-price-original">${p.precoOriginal} MT</span>` : ''}
+          <span class="product-price">${p.preco} MT</span>
+        </div>
         <div class="product-rating" id="rating-${p.id}">
           ${avaliacoesPorProduto[p.id] ? `
             <span class="stars">${renderEstrelas(avaliacoesPorProduto[p.id].media)}</span>
@@ -1783,18 +1788,13 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
             <span class="rating-note">Sem avaliações ainda</span>
           `}
         </div>
-        <div class="product-price-wrap">
-          ${p.precoOriginal ? `<span class="product-price-original">${p.precoOriginal} MT</span>` : ''}
-          <span class="product-price">${p.preco} MT</span>
-        </div>
         <div class="product-actions">
-          <button class="btn-add-cart" ${esgotado ? 'disabled' : ''} onclick="abrirOpcoes(${p.id})">Adicionar ao Carrinho</button>
+          <button class="btn-add-cart" ${esgotado ? 'disabled' : ''} onclick="abrirOpcoes(${p.id})">Comprar</button>
         </div>
         <div class="product-options-panel" id="opcoes-${p.id}">
           ${p.desc ? `<div class="product-desc" onclick="this.classList.toggle('expanded')">${p.desc}</div>` : ''}
-          ${cores ? `<div class="color-row">${cores}</div>` : ''}
           ${tamanhos ? `<div class="size-row">${tamanhos}</div>` : ''}
-          <button class="btn-continuar" onclick="adicionarAoCarrinho(${p.id})">Continuar</button>
+          <button class="btn-continuar" onclick="adicionarAoCarrinho(${p.id})">Adicionar ao Carrinho</button>
         </div>
       </div>`;
     }).join('');

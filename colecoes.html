@@ -158,7 +158,7 @@
   }
 
   section{
-    padding:72px 6%;
+    padding:52px 6%;
   }
 
   .sec-title{
@@ -242,7 +242,7 @@
     margin:0 auto;
     background:var(--placeholder-bg);
     border:1px dashed var(--border);
-    border-radius:14px;
+    border-radius:0;
     overflow:hidden;
     position:relative;
   }
@@ -363,7 +363,7 @@
 
   @media (max-width:600px){
     .categorias-section{padding:28px 4%;}
-    .categorias-grid{grid-template-columns:repeat(3, 1fr); gap:10px;}
+    .categorias-grid{grid-template-columns:repeat(var(--cat-cols, 3), 1fr); gap:16px 10px;}
     .categoria-card{flex-direction:column; text-align:center; gap:8px;}
     .categoria-img{width:56px; height:56px;}
     .categoria-nome{font-size:11px; margin-bottom:4px;}
@@ -467,8 +467,8 @@
 
   .favorita-card-img{
     width:100%;
-    aspect-ratio:3/4;
-    border-radius:14px;
+    aspect-ratio:1/1;
+    border-radius:0;
     overflow:hidden;
     margin-bottom:12px;
     background:linear-gradient(160deg, var(--green-mid) 0%, var(--green-soft) 100%);
@@ -482,7 +482,7 @@
   }
 
   .favorita-card-nome{
-    font-family:var(--font-display);
+    font-family:'Helvetica Neue', Arial, sans-serif;
     font-size:14px;
     font-weight:600;
     color:var(--green);
@@ -531,7 +531,7 @@
     width:100%;
     max-width:360px;
     aspect-ratio:4/5;
-    border-radius:14px;
+    border-radius:0;
     overflow:hidden;
     background:var(--placeholder-bg);
   }
@@ -561,7 +561,7 @@
 
   .marcante-card{
     position:relative;
-    border-radius:14px;
+    border-radius:0;
     overflow:hidden;
     aspect-ratio:3/4;
     background:var(--placeholder-bg);
@@ -731,7 +731,7 @@
 
 <!-- CATEGORIAS -->
 <div class="categorias-section">
-  <div class="categorias-grid">
+  <div class="categorias-grid" id="categorias-grid-publico">
     <a class="categoria-card" href="loja.html?categoria=Homem">
       <div class="categoria-img"></div>
       <div>
@@ -766,48 +766,40 @@
 </div>
 
 <!-- 2. LANÇAMENTOS FUTUROS -->
-<section id="lancamentos">
+<section id="lancamentos" style="display:none;">
   <div class="sec-inner" style="text-align:center;">
     <div class="eyebrow">Lançamentos Futuros</div>
-    <div id="lancamento-conteudo">
-      <p class="sec-text" style="margin:0 auto;">Ainda não há um lançamento agendado. Assim que uma nova coleção for confirmada, aparece aqui.</p>
-    </div>
+    <div id="lancamento-conteudo"></div>
   </div>
 </section>
 
 <!-- 3. NOVAS COLEÇÕES -->
-<section id="nova-colecao">
+<section id="nova-colecao" style="display:none;">
   <div class="sec-inner" style="text-align:center;">
     <div class="eyebrow">Novas Coleções</div>
     <p class="sec-text" style="margin:0 auto;">Uma nova expressão da ROYALTY. Peças criadas para representar atitude, identidade e exclusividade.</p>
 
-    <div id="nova-colecao-conteudo">
-      <p class="sec-text" style="margin:0 auto;">Ainda não há novas coleções definidas.</p>
-    </div>
+    <div id="nova-colecao-conteudo"></div>
   </div>
 </section>
 
 <!-- 4. COLEÇÕES MAIS VENDIDAS -->
-<section id="favorita">
+<section id="favorita" style="display:none;">
   <div class="sec-inner" style="text-align:center;">
     <div class="eyebrow">Coleções Mais Vendidas</div>
     <p class="sec-text" style="margin:0 auto;">Esta selecção tornou-se uma das favoritas da ROYALTY. Descubra os modelos que estão a conquistar os nossos clientes.</p>
 
-    <div class="favorita-produtos" id="grid-favorita">
-      <div class="empty-note">A carregar...</div>
-    </div>
+    <div class="favorita-produtos" id="grid-favorita"></div>
 
     <a class="btn-outline" href="loja.html">Ver Coleção</a>
   </div>
 </section>
 
 <!-- 5. COLEÇÕES MAIS MARCANTES -->
-<section id="marcantes">
+<section id="marcantes" style="display:none;">
   <div class="sec-inner" style="text-align:center;">
     <div class="eyebrow">Coleções Mais Marcantes</div>
-    <div id="marcantes-conteudo">
-      <p class="sec-text" style="margin:0 auto;">Ainda não há coleções marcantes definidas. Esta secção fica pronta para quando quiseres destacar as mais representativas da marca.</p>
-    </div>
+    <div id="marcantes-conteudo"></div>
   </div>
 </section>
 
@@ -884,16 +876,51 @@
       </a>`;
   }
 
-  // ─── 2. Novas Coleções (curadas no ADM) ───
-  function carregarNovasColecoesPublico(){
-    const box = document.getElementById('nova-colecao-conteudo');
-    if(!box) return;
-    fetch(`${SB_URL}/rest/v1/colecoes_novas?activo=eq.true&order=ordem.asc&select=*`, {
+  // ─── Categorias (imagens/nomes vindos do ADM) ───
+  function colunasSemOrfa(n){
+    if(n<=1) return 1;
+    if(n===2) return 2;
+    if(n===3) return 3;
+    if(n%3===0) return 3;
+    if(n%2===0) return 2;
+    return 3;
+  }
+
+  function carregarCategoriasPublico(){
+    const grid = document.getElementById('categorias-grid-publico');
+    if(!grid) return;
+    fetch(`${SB_URL}/rest/v1/categorias?order=ordem.asc&select=nome,imagem_url,ordem`, {
       headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
     })
     .then(r => r.json())
     .then(data => {
       if(!data || !data.length) return;
+      grid.style.setProperty('--cat-cols', colunasSemOrfa(data.length));
+      grid.innerHTML = data.map(c => `
+        <a class="categoria-card" href="loja.html?categoria=${encodeURIComponent(c.nome)}">
+          <div class="categoria-img">${c.imagem_url ? `<img src="${c.imagem_url}" alt="${c.nome}" loading="lazy">` : ''}</div>
+          <div>
+            <div class="categoria-nome">${c.nome}</div>
+            <div class="categoria-link">Comprar ${c.nome} →</div>
+          </div>
+        </a>
+      `).join('');
+    })
+    .catch(() => {});
+  }
+
+  // ─── 2. Novas Coleções (curadas no ADM) ───
+  function carregarNovasColecoesPublico(){
+    const secao = document.getElementById('nova-colecao');
+    const box = document.getElementById('nova-colecao-conteudo');
+    if(!box || !secao) return;
+    fetch(`${SB_URL}/rest/v1/colecoes_novas?activo=eq.true&order=ordem.asc&select=*`, {
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+    })
+    .then(r => r.json())
+    .then(data => {
+      if(!data || !data.length){ secao.style.display='none'; return; }
+      secao.style.display='';
       box.innerHTML = `
         <div class="marcantes-grid">
           ${data.map(m => `
@@ -913,6 +940,7 @@
 
   // ─── 3. Favorita dos Clientes: produtos mais vendidos ───
   function carregarFavorita(){
+    const secao = document.getElementById('favorita');
     const grid = document.getElementById('grid-favorita');
     Promise.all([
       fetch(`${SB_URL}/rest/v1/estatisticas_produtos?order=total_vendas.desc&limit=4&select=produto_id,total_vendas`, {
@@ -924,7 +952,7 @@
     ])
     .then(([stats, avaliacoes]) => {
       const ids = (stats||[]).filter(s => s.total_vendas > 0).map(s => s.produto_id);
-      if(!ids.length){ grid.innerHTML = '<div class="empty-note">Ainda sem vendas suficientes para destacar.</div>'; return; }
+      if(!ids.length){ if(secao) secao.style.display='none'; return; }
 
       const avalPorProduto = {};
       (avaliacoes||[]).forEach(a => {
@@ -942,10 +970,12 @@
       .then(r => r.json())
       .then(produtos => {
         const ordenados = ids.map(id => produtos.find(p => p.id === id)).filter(Boolean);
+        if(!ordenados.length){ if(secao) secao.style.display='none'; return; }
+        if(secao) secao.style.display='';
         grid.innerHTML = ordenados.map(p => cardFavorita(p, avalPorProduto[p.id])).join('');
       });
     })
-    .catch(() => { grid.innerHTML = '<div class="empty-note">Não foi possível carregar.</div>'; });
+    .catch(() => { if(secao) secao.style.display='none'; });
   }
 
   // ─── Banner (carrossel com autoplay) ───
@@ -1046,14 +1076,16 @@
 
   // ─── Lançamento Futuro (dinâmico) ───
   function carregarLancamentoFuturo(){
+    const secao = document.getElementById('lancamentos');
     const box = document.getElementById('lancamento-conteudo');
-    if(!box) return;
+    if(!box || !secao) return;
     fetch(`${SB_URL}/rest/v1/lancamentos?activo=eq.true&order=id.desc&limit=1&select=*`, {
       headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
     })
     .then(r => r.json())
     .then(data => {
-      if(!data || !data.length) return;
+      if(!data || !data.length){ secao.style.display='none'; return; }
+      secao.style.display='';
       const l = data[0];
       const dataFmt = l.data_prevista ? new Date(l.data_prevista + 'T00:00:00').toLocaleDateString('pt-PT', { day:'2-digit', month:'long', year:'numeric' }) : '';
       box.innerHTML = `
@@ -1065,11 +1097,12 @@
         </div>
       `;
     })
-    .catch(() => {});
+    .catch(() => { secao.style.display='none'; });
   }
 
   // ─── Coleções Mais Marcantes (dinâmico) ───
   function carregarMarcantesPublico(){
+    const secao = document.getElementById('marcantes');
     const box = document.getElementById('marcantes-conteudo');
     if(!box) return;
     fetch(`${SB_URL}/rest/v1/colecoes_destaque?activo=eq.true&order=ordem.asc&select=*`, {
@@ -1077,7 +1110,8 @@
     })
     .then(r => r.json())
     .then(data => {
-      if(!data || !data.length) return;
+      if(!data || !data.length){ if(secao) secao.style.display='none'; return; }
+      if(secao) secao.style.display='';
       box.innerHTML = `
         <div class="marcantes-grid">
           ${data.map(m => `
@@ -1092,7 +1126,7 @@
         </div>
       `;
     })
-    .catch(() => {});
+    .catch(() => { if(secao) secao.style.display='none'; });
   }
 
   marcarLinkActivo();
@@ -1100,6 +1134,7 @@
   carregarLancamentoFuturo();
   carregarMarcantesPublico();
   carregarContactosDinamicos();
+  carregarCategoriasPublico();
   carregarNovasColecoesPublico();
   carregarFavorita();
 </script>
