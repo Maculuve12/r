@@ -185,7 +185,7 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   /* ===== BANNER (kept intentionally empty - no copy per brief) ===== */
   .banner{
     width:100%;
-    height:420px;
+    aspect-ratio: 1296 / 544;
     background:var(--placeholder-bg);
     border:1px dashed var(--border);
     border-left:none;
@@ -241,7 +241,6 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   }
 
   @media (max-width:700px){
-    .banner{height:260px;}
   }
 
   /* ===== SHOP SECTION ===== */
@@ -673,15 +672,28 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
 
   .color-row{
     display:flex;
-    gap:6px;
+    gap:8px;
     justify-content:flex-start;
     flex-wrap:wrap;
-    margin-bottom:6px;
+    margin-bottom:10px;
+  }
+
+  .escolha-hint{
+    background:var(--green);
+    color:var(--gold);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:0.3px;
+    text-transform:uppercase;
+    text-align:center;
+    padding:8px 10px;
+    margin-bottom:10px;
+    width:100%;
   }
 
   .color-dot{
-    width:20px;
-    height:20px;
+    width:28px;
+    height:28px;
     border-radius:50%;
     border:1px solid var(--border);
     cursor:pointer;
@@ -924,6 +936,8 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   }
 
   .cupao-msg{font-size:11px;margin-bottom:8px;}
+  .msg-erro{font-size:11px;margin-bottom:8px;color:#B3261E;}
+  .msg-ok{font-size:11px;margin-bottom:8px;color:var(--green);}
   .cupao-msg.ok{color:var(--green);}
   .cupao-msg.err{color:#b04a4a;}
 
@@ -1194,7 +1208,7 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   <div class="logo">ROYALTY</div>
 
   <div class="header-icons">
-    <span class="icon icon-account" title="Conta">
+    <span class="icon icon-account" title="Conta" onclick="toggleConta(true)" id="icon-account" style="cursor:pointer;">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#142D29" stroke-width="2">
         <circle cx="12" cy="8" r="4"></circle>
         <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path>
@@ -1228,6 +1242,9 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
 
 <!-- BANNER: fica vazio até haver banners activos no Supabase -->
 <div class="banner" id="banner-box"></div>
+
+<!-- CATEGORIAS: círculos vindos do ADM -->
+<div class="categorias-row" id="categorias-row"></div>
 
 <section class="shop-section">
   <div class="tabs">
@@ -1345,6 +1362,104 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
 
 <div class="toast" id="toast"></div>
 
+<div class="cart-overlay" id="conta-overlay" onclick="if(event.target===this)toggleConta(false)">
+  <div class="cart-drawer">
+    <div class="cart-header">
+      <h3 id="conta-titulo">A Minha Conta</h3>
+      <button class="cart-close" onclick="toggleConta(false)">&times;</button>
+    </div>
+
+    <div class="cart-body" id="conta-body" style="padding:20px;">
+
+      <!-- Logado -->
+      <div id="conta-logado" style="display:none;">
+        <p style="font-size:14px;color:var(--green);margin-bottom:18px;">Olá, <strong id="conta-nome-logado"></strong>!</p>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--teal-muted);">Os Meus Dados</div>
+          <span onclick="mostrarEdicaoPerfil(true)" style="font-size:11px;font-weight:700;color:var(--gold);cursor:pointer;">✏️ Editar</span>
+        </div>
+
+        <!-- Vista (dados guardados) -->
+        <div id="perfil-vista" style="border:1px solid var(--border);padding:12px;margin-bottom:20px;">
+          <div style="font-size:13px;color:var(--green);margin-bottom:6px;"><strong id="perfil-vista-nome"></strong></div>
+          <div style="font-size:12px;color:var(--teal-muted);margin-bottom:4px;" id="perfil-vista-telefone"></div>
+          <div style="font-size:12px;color:var(--teal-muted);" id="perfil-vista-morada"></div>
+        </div>
+
+        <!-- Edição -->
+        <div id="perfil-edicao" style="display:none;">
+          <div class="form-group">
+            <label class="form-label">Nome Completo</label>
+            <input type="text" class="form-input" id="perfil-nome">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Número de Celular</label>
+            <input type="tel" class="form-input" id="perfil-telefone">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Morada</label>
+            <input type="text" class="form-input" id="perfil-morada" placeholder="Cidade, bairro, referência...">
+          </div>
+          <div class="cupao-msg" id="perfil-msg" style="margin-bottom:10px;"></div>
+          <button class="btn-continuar-comprar" onclick="guardarDadosCliente()">Guardar Dados</button>
+        </div>
+
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--teal-muted);margin:26px 0 10px;">Os Meus Pedidos</div>
+        <div id="pedidos-cliente-lista">
+          <p style="font-size:12px;color:var(--teal-muted);">A carregar...</p>
+        </div>
+
+        <button class="cart-checkout-btn" style="margin-top:22px;" onclick="sairConta()">Sair da Conta</button>
+      </div>
+
+      <!-- Entrar -->
+      <div id="conta-form-entrar">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="entrar-email" placeholder="teu@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Palavra-passe</label>
+          <input type="password" class="form-input" id="entrar-senha" placeholder="••••••••">
+        </div>
+        <div class="cupao-msg" id="entrar-msg" style="margin-bottom:10px;"></div>
+        <button class="cart-checkout-btn" onclick="entrarConta()">Entrar</button>
+        <p style="font-size:12px;text-align:center;margin-top:14px;color:var(--teal-muted);">
+          Ainda não tens conta? <a href="#" onclick="mostrarFormConta('criar');return false;" style="color:var(--gold);font-weight:600;">Criar conta</a>
+        </p>
+      </div>
+
+      <!-- Criar Conta -->
+      <div id="conta-form-criar" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Nome Completo</label>
+          <input type="text" class="form-input" id="criar-nome" placeholder="Ex: João Silva">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="criar-email" placeholder="teu@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Número de Celular</label>
+          <input type="tel" class="form-input" id="criar-telefone" placeholder="Ex: 841234567">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Palavra-passe</label>
+          <input type="password" class="form-input" id="criar-senha" placeholder="Mínimo 6 caracteres">
+        </div>
+        <div class="cupao-msg" id="criar-msg" style="margin-bottom:10px;"></div>
+        <button class="cart-checkout-btn" onclick="criarConta()">Criar Conta</button>
+        <p style="font-size:12px;text-align:center;margin-top:14px;color:var(--teal-muted);">
+          Já tens conta? <a href="#" onclick="mostrarFormConta('entrar');return false;" style="color:var(--gold);font-weight:600;">Entrar</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   // ════════════════════════════════════════
   // [FUNÇÕES REAIS DA LOJA] — Adaptadas da loja.html
@@ -1355,6 +1470,7 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   let WA_NUMBER = '258879573018';
   const SB_URL = 'https://zrcnwkrvfkykqnhwoklh.supabase.co';
   const SB_KEY = 'sb_publishable_PX2HcOTmRmbHLDOT5YuKjg_KBNB6aZc';
+  const supa = window.supabase.createClient(SB_URL, SB_KEY);
 
   let produtos = [];
   const estados = {};
@@ -1386,12 +1502,23 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     }).catch(function(){});
   }
 
-  function sbGuardarPedido(cliente, itens, subtotal, desconto, total, cupao){
-    sbPost('pedidos', {
-      cliente_nome:cliente.nome, cliente_telefone:cliente.telefone,
-      cliente_localizacao:cliente.localizacao, notas:cliente.notas||'',
-      itens:itens, subtotal:subtotal, desconto:desconto, total:total, cupao_usado:cupao||null
-    });
+  async function sbGuardarPedido(cliente, itens, subtotal, desconto, total, cupao){
+    let token = SB_KEY;
+    let uid = null;
+    try{
+      const { data } = await supa.auth.getSession();
+      if(data && data.session){ token = data.session.access_token; uid = data.session.user.id; }
+    }catch(e){}
+    fetch(`${SB_URL}/rest/v1/pedidos`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token,'Prefer':'return=minimal'},
+      body:JSON.stringify({
+        cliente_nome:cliente.nome, cliente_telefone:cliente.telefone,
+        cliente_localizacao:cliente.localizacao, notas:cliente.notas||'',
+        itens:itens, subtotal:subtotal, desconto:desconto, total:total, cupao_usado:cupao||null,
+        user_id:uid
+      })
+    }).catch(function(){});
   }
 
   function sbCarrinho(produto, cor, tamanho){
@@ -1773,7 +1900,6 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
           ${tag}
           ${slider}
         </div>
-        ${cores ? `<div class="color-row">${cores}</div>` : ''}
         <div class="product-name">${p.nome}</div>
         <div class="product-price-wrap">
           ${p.precoOriginal ? `<span class="product-price-original">${p.precoOriginal} MT</span>` : ''}
@@ -1793,6 +1919,8 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
         </div>
         <div class="product-options-panel" id="opcoes-${p.id}">
           ${p.desc ? `<div class="product-desc" onclick="this.classList.toggle('expanded')">${p.desc}</div>` : ''}
+          ${(cores || tamanhos) ? `<div class="escolha-hint">Escolha a cor e tamanho para adicionar ao carrinho</div>` : ''}
+          ${cores ? `<div class="color-row">${cores}</div>` : ''}
           ${tamanhos ? `<div class="size-row">${tamanhos}</div>` : ''}
           <button class="btn-continuar" onclick="adicionarAoCarrinho(${p.id})">Adicionar ao Carrinho</button>
         </div>
@@ -1874,6 +2002,180 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
 
   function handleOverlayClick(e){
     if(e.target.id === 'cart-overlay') toggleCart(false);
+  }
+
+  // ════════════════════════════════════════
+  // CONTA DE CLIENTE (login/registo)
+  // ════════════════════════════════════════
+  function toggleConta(abrir){
+    const overlay = document.getElementById('conta-overlay');
+    if(abrir){ overlay.classList.add('open'); document.body.style.overflow='hidden'; }
+    else{ overlay.classList.remove('open'); document.body.style.overflow=''; }
+  }
+
+  function mostrarFormConta(qual){
+    document.getElementById('conta-form-entrar').style.display = qual==='entrar' ? 'block' : 'none';
+    document.getElementById('conta-form-criar').style.display = qual==='criar' ? 'block' : 'none';
+    document.getElementById('entrar-msg').textContent = '';
+    document.getElementById('criar-msg').textContent = '';
+  }
+
+  async function entrarConta(){
+    const email = document.getElementById('entrar-email').value.trim();
+    const senha = document.getElementById('entrar-senha').value;
+    const msgEl = document.getElementById('entrar-msg');
+    if(!email || !senha){ msgEl.className='msg-erro'; msgEl.textContent='Preenche o email e a palavra-passe.'; return; }
+    msgEl.className=''; msgEl.textContent='A entrar...';
+    const { data, error } = await supa.auth.signInWithPassword({ email, password: senha });
+    if(error){ msgEl.className='msg-erro'; msgEl.textContent = 'Email ou palavra-passe incorrectos.'; return; }
+    await aplicarSessaoCliente(data.user);
+    toggleConta(false);
+    showToast('Sessão iniciada. Bem-vindo(a)!');
+  }
+
+  async function criarConta(){
+    const nome = document.getElementById('criar-nome').value.trim();
+    const email = document.getElementById('criar-email').value.trim();
+    const telefone = document.getElementById('criar-telefone').value.trim();
+    const senha = document.getElementById('criar-senha').value;
+    const msgEl = document.getElementById('criar-msg');
+    if(!nome || !email || !senha){ msgEl.className='msg-erro'; msgEl.textContent='Preenche pelo menos nome, email e palavra-passe.'; return; }
+    if(senha.length < 6){ msgEl.className='msg-erro'; msgEl.textContent='A palavra-passe precisa de pelo menos 6 caracteres.'; return; }
+    msgEl.className=''; msgEl.textContent='A criar conta...';
+    const { data, error } = await supa.auth.signUp({
+      email, password: senha,
+      options:{ data:{ nome } }
+    });
+    if(error){ msgEl.className='msg-erro'; msgEl.textContent = error.message.includes('already') ? 'Já existe uma conta com este email.' : 'Não foi possível criar a conta.'; return; }
+    if(!data.session){
+      msgEl.className='msg-ok';
+      msgEl.textContent = 'Conta criada! Verifica o teu email para confirmar antes de entrares.';
+      return;
+    }
+    await supa.from('clientes').upsert({ user_id: data.user.id, nome, telefone: telefone || null });
+    await aplicarSessaoCliente(data.user);
+    toggleConta(false);
+    showToast('Conta criada com sucesso!');
+  }
+
+  async function sairConta(){
+    await supa.auth.signOut();
+    document.getElementById('conta-logado').style.display = 'none';
+    document.getElementById('conta-form-entrar').style.display = 'block';
+    document.getElementById('conta-titulo').textContent = 'A Minha Conta';
+    mostrarFormConta('entrar');
+  }
+
+  async function aplicarSessaoCliente(user){
+    const { data: cliente } = await supa.from('clientes').select('nome,telefone,morada').eq('user_id', user.id).maybeSingle();
+    const nome = (cliente && cliente.nome) || (user.user_metadata && user.user_metadata.nome) || user.email;
+    document.getElementById('conta-nome-logado').textContent = nome;
+    document.getElementById('conta-titulo').textContent = 'A Minha Conta';
+    document.getElementById('conta-logado').style.display = 'block';
+    document.getElementById('conta-form-entrar').style.display = 'none';
+    document.getElementById('conta-form-criar').style.display = 'none';
+
+    document.getElementById('perfil-nome').value = (cliente && cliente.nome) || (user.user_metadata && user.user_metadata.nome) || '';
+    document.getElementById('perfil-telefone').value = (cliente && cliente.telefone) || '';
+    document.getElementById('perfil-morada').value = (cliente && cliente.morada) || '';
+
+    atualizarVistaPerfil(document.getElementById('perfil-nome').value, document.getElementById('perfil-telefone').value, document.getElementById('perfil-morada').value);
+    // Se já tem dados guardados, mostra a vista; senão, abre logo a edição
+    mostrarEdicaoPerfil(!(cliente && cliente.nome));
+
+    carregarPedidosCliente(user.id);
+  }
+
+  function atualizarVistaPerfil(nome, telefone, morada){
+    document.getElementById('perfil-vista-nome').textContent = nome || '—';
+    document.getElementById('perfil-vista-telefone').textContent = telefone ? `📱 ${telefone}` : '';
+    document.getElementById('perfil-vista-morada').textContent = morada ? `📍 ${morada}` : '';
+  }
+
+  function mostrarEdicaoPerfil(mostrar){
+    document.getElementById('perfil-edicao').style.display = mostrar ? 'block' : 'none';
+    document.getElementById('perfil-vista').style.display = mostrar ? 'none' : 'block';
+  }
+
+  async function guardarDadosCliente(){
+    const { data: sessao } = await supa.auth.getSession();
+    if(!sessao || !sessao.session) return;
+    const nome = document.getElementById('perfil-nome').value.trim();
+    const telefone = document.getElementById('perfil-telefone').value.trim();
+    const morada = document.getElementById('perfil-morada').value.trim();
+    const msgEl = document.getElementById('perfil-msg');
+    if(!nome){ msgEl.className='msg-erro'; msgEl.textContent='O nome não pode ficar vazio.'; return; }
+    msgEl.className=''; msgEl.textContent='A guardar...';
+    const { error } = await supa.from('clientes').upsert({ user_id: sessao.session.user.id, nome, telefone: telefone||null, morada: morada||null });
+    if(error){ msgEl.className='msg-erro'; msgEl.textContent='Não foi possível guardar.'; return; }
+    document.getElementById('conta-nome-logado').textContent = nome;
+    atualizarVistaPerfil(nome, telefone, morada);
+    msgEl.className='msg-ok'; msgEl.textContent='✅ Dados guardados!';
+    setTimeout(()=>{ msgEl.textContent=''; mostrarEdicaoPerfil(false); }, 900);
+  }
+
+  function estadoCor(estado){
+    if(estado === 'Entregue') return '#1E7B34';
+    if(estado === 'Enviado') return 'var(--gold)';
+    return 'var(--teal-muted)';
+  }
+
+  async function carregarPedidosCliente(userId){
+    const box = document.getElementById('pedidos-cliente-lista');
+    box.innerHTML = '<p style="font-size:12px;color:var(--teal-muted);">A carregar...</p>';
+    const { data: sessao } = await supa.auth.getSession();
+    const token = sessao && sessao.session ? sessao.session.access_token : SB_KEY;
+    try{
+      const r = await fetch(`${SB_URL}/rest/v1/pedidos?user_id=eq.${userId}&order=criado_em.desc&select=id,itens,total,estado,criado_em`, {
+        headers:{'apikey':SB_KEY,'Authorization':'Bearer '+token}
+      });
+      const data = await r.json();
+      if(!data || !data.length){ box.innerHTML = '<p style="font-size:12px;color:var(--teal-muted);">Ainda não tens pedidos.</p>'; return; }
+
+      const idsProdutos = [...new Set(data.flatMap(p => (p.itens||[]).map(i => i.id)).filter(Boolean))];
+      let imagemPorId = {};
+      if(idsProdutos.length){
+        const rImg = await fetch(`${SB_URL}/rest/v1/produtos?id=in.(${idsProdutos.join(',')})&select=id,imagens`, {
+          headers:{'apikey':SB_KEY,'Authorization':'Bearer '+token}
+        });
+        const produtosImg = await rImg.json().catch(() => []);
+        (produtosImg||[]).forEach(pr => { imagemPorId[pr.id] = (pr.imagens && pr.imagens[0]) || ''; });
+      }
+
+      box.innerHTML = data.map(p => {
+        const dataFmt = p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-PT', {day:'2-digit',month:'short',year:'numeric'}) : '';
+        const itensHtml = (p.itens||[]).map(i => `
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <div style="width:44px;height:44px;flex-shrink:0;background:var(--placeholder-bg);overflow:hidden;">
+              ${imagemPorId[i.id] ? `<img src="${imagemPorId[i.id]}" alt="${i.nome}" style="width:100%;height:100%;object-fit:cover;display:block;">` : ''}
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:12px;color:var(--green);">${i.nome}</div>
+              <div style="font-size:10.5px;color:var(--teal-muted);">${i.cor?`${i.cor} `:''}${i.tamanho?`· ${i.tamanho} `:''}· ${i.qtd}x</div>
+            </div>
+          </div>
+        `).join('');
+        return `
+          <div style="border:1px solid var(--border);padding:12px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <span style="font-size:11px;color:var(--teal-muted);">${dataFmt}</span>
+              <span style="font-size:9px;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;color:${estadoCor(p.estado)};">${p.estado || 'Pendente'}</span>
+            </div>
+            ${itensHtml}
+            <div style="font-size:14px;font-weight:700;color:var(--gold);text-align:right;margin-top:4px;">${p.total} MT</div>
+          </div>
+        `;
+      }).join('');
+    }catch(e){
+      box.innerHTML = '<p style="font-size:12px;color:var(--teal-muted);">Não foi possível carregar os pedidos.</p>';
+    }
+  }
+
+  async function verificarSessaoCliente(){
+    const { data } = await supa.auth.getSession();
+    if(data && data.session && data.session.user){
+      await aplicarSessaoCliente(data.session.user);
+    }
   }
 
   function adicionarAoCarrinho(id){
@@ -2028,10 +2330,25 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     }
   }
 
-  function mostrarFormulario(){
+  async function mostrarFormulario(){
     formularioVisivel = true;
     document.getElementById('cart-form-container').style.display='flex';
     document.getElementById('btn-pagar').style.display='none';
+
+    try{
+      const { data } = await supa.auth.getSession();
+      if(data && data.session){
+        const { data: cliente } = await supa.from('clientes').select('nome,telefone,morada').eq('user_id', data.session.user.id).maybeSingle();
+        if(cliente){
+          const campoNome = document.getElementById('client-name');
+          const campoTel = document.getElementById('client-phone');
+          const campoLoc = document.getElementById('client-location');
+          if(cliente.nome && !campoNome.value) campoNome.value = cliente.nome;
+          if(cliente.telefone && !campoTel.value) campoTel.value = cliente.telefone;
+          if(cliente.morada && !campoLoc.value) campoLoc.value = cliente.morada;
+        }
+      }
+    }catch(e){}
 
     const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
     fbq('track', 'InitiateCheckout', {
@@ -2050,6 +2367,12 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     if(!nome){ showToast('Por favor, introduza o seu Nome Completo.'); return; }
     if(!celular){ showToast('Por favor, introduza o seu Número de Celular.'); return; }
     if(!localizacao){ showToast('Por favor, introduza a sua Localização.'); return; }
+
+    supa.auth.getSession().then(({data}) => {
+      if(data && data.session){
+        supa.from('clientes').upsert({ user_id:data.session.user.id, nome, telefone:celular, morada:localizacao }).then(()=>{});
+      }
+    }).catch(()=>{});
 
     let msg = `Olá Royalty Maculuve! 👋\n\n👤 *DADOS DO CLIENTE*\n• Nome: ${nome}\n• Celular: ${celular}\n• Localização: ${localizacao}\n\n🛍️ *DETALHES DO PEDIDO*\n`;
     carrinho.forEach((item,i) => {
@@ -2221,6 +2544,7 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   atualizarCarrinhoVisual();
   carregarProdutosLoja();
   carregarBanners();
+  verificarSessaoCliente();
   verificarLinkAvaliacao();
   verificarLinkProduto();
   verificarFiltroCategoria();
