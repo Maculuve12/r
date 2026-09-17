@@ -581,7 +581,17 @@
 
     <!-- SITE -->
     <div class="tab-content" id="tab-site">
-      <div class="sec-titulo">🔐 Login da Loja</div>
+      <div class="sec-titulo">🔑 Administradores</div>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="form-grupo full"><label class="form-label">Email da conta a tornar admin (a conta já tem de existir)</label><input class="form-input" id="novo-admin-email" placeholder="alguem@exemplo.com"></div>
+        </div>
+        <div class="form-acoes"><button class="btn-guardar" onclick="adicionarAdmin()">+ Tornar Admin</button></div>
+        <div class="form-msg" id="admins-msg"></div>
+        <div id="admins-lista" style="margin-top:14px;"><div class="loading">A carregar...</div></div>
+      </div>
+
+      <div class="sec-titulo" style="margin-top:32px;">🔐 Login da Loja</div>
       <div class="form-card">
         <div class="form-grid">
           <div class="form-grupo full"><label class="form-label">Imagem/Logo do círculo (aparece no painel de login/registo da loja)</label><input class="form-input" id="cfg-logo-login" placeholder="https://i.ibb.co/...">
@@ -758,7 +768,7 @@
     if(tab==='relatorios') carregarRelatorios(7);
     if(tab==='galeria'){ carregarGaleriaAdmin(); carregarLogoGaleriaConfig(); }
     if(tab==='colecoes'){ carregarMarcantes(); carregarNovasColecoes(); carregarLancamento(); carregarBannersColecoes(); }
-    if(tab==='site'){ carregarSobreNos(); carregarContactosConfig(); carregarNewsletter(); carregarLogoLogin(); }
+    if(tab==='site'){ carregarSobreNos(); carregarContactosConfig(); carregarNewsletter(); carregarLogoLogin(); carregarAdmins(); }
     if(tab==='actividade') carregarActividade();
   }
 
@@ -1723,6 +1733,42 @@ ${linkProduto}
   }
 
   // ── Sobre Nós ──
+  async function carregarAdmins(){
+    const box = document.getElementById('admins-lista');
+    const { data, error } = await supa.rpc('admin_listar_admins');
+    if(error || !data){ box.innerHTML = '<div class="vazio">Não foi possível carregar.</div>'; return; }
+    box.innerHTML = data.map(a => `
+      <div class="produto-card">
+        <div class="produto-info"><div class="produto-nome">${a.email}</div></div>
+        <div class="produto-acoes">
+          <button class="btn-sm vermelho" onclick="removerAdmin('${a.email}')">Remover</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  async function adicionarAdmin(){
+    const email = document.getElementById('novo-admin-email').value.trim();
+    const msgEl = document.getElementById('admins-msg');
+    if(!email){ msgEl.className='msg-err'; msgEl.textContent='Escreve um email.'; return; }
+    msgEl.className=''; msgEl.textContent='A processar...';
+    const { data, error } = await supa.rpc('admin_adicionar_admin', { email_alvo: email });
+    if(error){ msgEl.className='msg-err'; msgEl.textContent='Erro: '+error.message; return; }
+    if(data==='NAO_ENCONTRADO'){ msgEl.className='msg-err'; msgEl.textContent='Não existe nenhuma conta com esse email. A pessoa tem de criar conta primeiro (na loja, ou tu no Supabase).'; return; }
+    msgEl.className='msg-ok'; msgEl.textContent='✅ Agora é admin!';
+    document.getElementById('novo-admin-email').value='';
+    registrarLog('Novo admin adicionado', email);
+    carregarAdmins();
+  }
+
+  async function removerAdmin(email){
+    if(!confirm(`Remover o acesso de admin de ${email}?`)) return;
+    const { data, error } = await supa.rpc('admin_remover_admin', { email_alvo: email });
+    if(error || data==='NAO_PODES_REMOVER_TI_PROPRIO'){ alert('Não podes remover o teu próprio acesso.'); return; }
+    registrarLog('Admin removido', email);
+    carregarAdmins();
+  }
+
   async function carregarLogoLogin(){
     const data=await sbGet('configuracoes','chave=eq.logo_login');
     document.getElementById('cfg-logo-login').value=(data[0]&&data[0].valor)||'';

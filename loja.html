@@ -937,6 +937,24 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   .cupao-msg{font-size:11px;margin-bottom:8px;}
   .msg-erro{font-size:11px;margin-bottom:8px;color:#B3261E;}
   .msg-ok{font-size:11px;margin-bottom:8px;color:var(--green);}
+
+  .perfil-linha{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:8px 0;
+    border-bottom:1px solid var(--border);
+    font-size:12.5px;
+  }
+  .perfil-linha .perfil-label{
+    color:var(--teal-muted);
+    font-weight:600;
+  }
+  .perfil-linha span:last-child{
+    color:var(--green);
+    font-weight:600;
+    text-align:right;
+  }
   .cupao-msg.ok{color:var(--green);}
   .cupao-msg.err{color:#b04a4a;}
 
@@ -1409,8 +1427,20 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
           <input type="tel" class="form-input" id="client-phone" placeholder="Ex: 841234567">
         </div>
         <div class="form-group">
-          <label class="form-label" for="client-location">Localização, Cidade e Zona *</label>
-          <input type="text" class="form-input" id="client-location" placeholder="Ex: Inhambane, Tofo, Zona Principal">
+          <label class="form-label" for="client-pais">País *</label>
+          <input type="text" class="form-input" id="client-pais" value="Moçambique">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="client-provincia">Província *</label>
+          <input type="text" class="form-input" id="client-provincia" placeholder="Ex: Inhambane">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="client-distrito">Distrito *</label>
+          <input type="text" class="form-input" id="client-distrito" placeholder="Ex: Zavala">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="client-bairro">Bairro *</label>
+          <input type="text" class="form-input" id="client-bairro" placeholder="Ex: Ndzili">
         </div>
         <div class="form-group">
           <label class="form-label" for="cart-order-notes">Observações</label>
@@ -1443,10 +1473,13 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
         </div>
 
         <!-- Vista (dados guardados) -->
-        <div id="perfil-vista" style="border:1px solid var(--border);padding:12px;margin-bottom:20px;">
-          <div style="font-size:13px;color:var(--green);margin-bottom:6px;"><strong id="perfil-vista-nome"></strong></div>
-          <div style="font-size:12px;color:var(--teal-muted);margin-bottom:4px;" id="perfil-vista-telefone"></div>
-          <div style="font-size:12px;color:var(--teal-muted);" id="perfil-vista-morada"></div>
+        <div id="perfil-vista" style="border:1px solid var(--border);padding:14px;margin-bottom:20px;">
+          <div class="perfil-linha"><span class="perfil-label">Nome</span><span id="perfil-vista-nome"></span></div>
+          <div class="perfil-linha"><span class="perfil-label">Contacto</span><span id="perfil-vista-telefone"></span></div>
+          <div class="perfil-linha"><span class="perfil-label">País</span><span id="perfil-vista-pais"></span></div>
+          <div class="perfil-linha"><span class="perfil-label">Província</span><span id="perfil-vista-provincia"></span></div>
+          <div class="perfil-linha"><span class="perfil-label">Distrito</span><span id="perfil-vista-distrito"></span></div>
+          <div class="perfil-linha" style="border-bottom:none;"><span class="perfil-label">Bairro</span><span id="perfil-vista-bairro"></span></div>
         </div>
 
         <!-- Edição -->
@@ -1460,11 +1493,28 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
             <input type="tel" class="form-input" id="perfil-telefone">
           </div>
           <div class="form-group">
-            <label class="form-label">Morada</label>
-            <input type="text" class="form-input" id="perfil-morada" placeholder="Cidade, bairro, referência...">
+            <label class="form-label">País</label>
+            <input type="text" class="form-input" id="perfil-pais" value="Moçambique">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Província</label>
+            <input type="text" class="form-input" id="perfil-provincia" placeholder="Ex: Inhambane">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Distrito</label>
+            <input type="text" class="form-input" id="perfil-distrito" placeholder="Ex: Zavala">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Bairro</label>
+            <input type="text" class="form-input" id="perfil-bairro" placeholder="Ex: Ndzili">
           </div>
           <div class="cupao-msg" id="perfil-msg" style="margin-bottom:10px;"></div>
           <button class="btn-continuar-comprar" onclick="guardarDadosCliente()">Guardar Dados</button>
+        </div>
+
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--teal-muted);margin:26px 0 10px;">O Meu Carrinho</div>
+        <div id="carrinho-conta-lista">
+          <p style="font-size:12px;color:var(--teal-muted);">O teu carrinho está vazio.</p>
         </div>
 
         <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--teal-muted);margin:26px 0 10px;">Os Meus Pedidos</div>
@@ -1591,7 +1641,10 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token,'Prefer':'return=minimal'},
       body:JSON.stringify({
         cliente_nome:cliente.nome, cliente_telefone:cliente.telefone,
-        cliente_localizacao:cliente.localizacao, notas:cliente.notas||'',
+        cliente_localizacao:cliente.localizacao,
+        cliente_pais:cliente.pais||null, cliente_provincia:cliente.provincia||null,
+        cliente_distrito:cliente.distrito||null, cliente_bairro:cliente.bairro||null,
+        notas:cliente.notas||'',
         itens:itens, subtotal:subtotal, desconto:desconto, total:total, cupao_usado:cupao||null,
         user_id:uid
       })
@@ -2161,7 +2214,7 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   }
 
   async function aplicarSessaoCliente(user){
-    const { data: cliente } = await supa.from('clientes').select('nome,telefone,morada').eq('user_id', user.id).maybeSingle();
+    const { data: cliente } = await supa.from('clientes').select('nome,telefone,pais,provincia,distrito,bairro').eq('user_id', user.id).maybeSingle();
     const nome = (cliente && cliente.nome) || (user.user_metadata && user.user_metadata.nome) || user.email;
     document.getElementById('conta-nome-logado').textContent = nome;
     document.getElementById('conta-titulo').textContent = 'A Minha Conta';
@@ -2171,19 +2224,26 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
 
     document.getElementById('perfil-nome').value = (cliente && cliente.nome) || (user.user_metadata && user.user_metadata.nome) || '';
     document.getElementById('perfil-telefone').value = (cliente && cliente.telefone) || '';
-    document.getElementById('perfil-morada').value = (cliente && cliente.morada) || '';
+    document.getElementById('perfil-pais').value = (cliente && cliente.pais) || 'Moçambique';
+    document.getElementById('perfil-provincia').value = (cliente && cliente.provincia) || '';
+    document.getElementById('perfil-distrito').value = (cliente && cliente.distrito) || '';
+    document.getElementById('perfil-bairro').value = (cliente && cliente.bairro) || '';
 
-    atualizarVistaPerfil(document.getElementById('perfil-nome').value, document.getElementById('perfil-telefone').value, document.getElementById('perfil-morada').value);
+    atualizarVistaPerfil();
     // Se já tem dados guardados, mostra a vista; senão, abre logo a edição
     mostrarEdicaoPerfil(!(cliente && cliente.nome));
 
     carregarPedidosCliente(user.id);
+    carregarCarrinhoConta(user.id);
   }
 
-  function atualizarVistaPerfil(nome, telefone, morada){
-    document.getElementById('perfil-vista-nome').textContent = nome || '—';
-    document.getElementById('perfil-vista-telefone').textContent = telefone ? `📱 ${telefone}` : '';
-    document.getElementById('perfil-vista-morada').textContent = morada ? `📍 ${morada}` : '';
+  function atualizarVistaPerfil(){
+    document.getElementById('perfil-vista-nome').textContent = document.getElementById('perfil-nome').value || '—';
+    document.getElementById('perfil-vista-telefone').textContent = document.getElementById('perfil-telefone').value || '—';
+    document.getElementById('perfil-vista-pais').textContent = document.getElementById('perfil-pais').value || '—';
+    document.getElementById('perfil-vista-provincia').textContent = document.getElementById('perfil-provincia').value || '—';
+    document.getElementById('perfil-vista-distrito').textContent = document.getElementById('perfil-distrito').value || '—';
+    document.getElementById('perfil-vista-bairro').textContent = document.getElementById('perfil-bairro').value || '—';
   }
 
   function mostrarEdicaoPerfil(mostrar){
@@ -2196,22 +2256,67 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     if(!sessao || !sessao.session) return;
     const nome = document.getElementById('perfil-nome').value.trim();
     const telefone = document.getElementById('perfil-telefone').value.trim();
-    const morada = document.getElementById('perfil-morada').value.trim();
+    const pais = document.getElementById('perfil-pais').value.trim();
+    const provincia = document.getElementById('perfil-provincia').value.trim();
+    const distrito = document.getElementById('perfil-distrito').value.trim();
+    const bairro = document.getElementById('perfil-bairro').value.trim();
     const msgEl = document.getElementById('perfil-msg');
     if(!nome){ msgEl.className='msg-erro'; msgEl.textContent='O nome não pode ficar vazio.'; return; }
     msgEl.className=''; msgEl.textContent='A guardar...';
-    const { error } = await supa.from('clientes').upsert({ user_id: sessao.session.user.id, nome, telefone: telefone||null, morada: morada||null });
+    const { error } = await supa.from('clientes').upsert({ user_id: sessao.session.user.id, nome, telefone: telefone||null, pais: pais||null, provincia: provincia||null, distrito: distrito||null, bairro: bairro||null });
     if(error){ msgEl.className='msg-erro'; msgEl.textContent='Não foi possível guardar.'; return; }
     document.getElementById('conta-nome-logado').textContent = nome;
-    atualizarVistaPerfil(nome, telefone, morada);
+    atualizarVistaPerfil();
     msgEl.className='msg-ok'; msgEl.textContent='✅ Dados guardados!';
     setTimeout(()=>{ msgEl.textContent=''; mostrarEdicaoPerfil(false); }, 900);
   }
 
-  function estadoCor(estado){
-    if(estado === 'Entregue') return '#1E7B34';
-    if(estado === 'Enviado') return 'var(--gold)';
-    return 'var(--teal-muted)';
+  let sincronizandoCarrinho = false;
+  function sincronizarCarrinhoConta(){
+    if(sincronizandoCarrinho) return;
+    supa.auth.getSession().then(({data}) => {
+      if(!data || !data.session) return;
+      supa.from('carrinhos').upsert({ user_id:data.session.user.id, itens:carrinho, actualizado_em:new Date().toISOString() }).then(()=>{});
+    }).catch(()=>{});
+  }
+
+  async function carregarCarrinhoConta(userId){
+    sincronizandoCarrinho = true;
+    try{
+      const { data } = await supa.from('carrinhos').select('itens').eq('user_id', userId).maybeSingle();
+      const itensConta = (data && data.itens) || [];
+      itensConta.forEach(itemConta => {
+        const existente = carrinho.find(i => i.id===itemConta.id && i.cor===itemConta.cor && i.tamanho===itemConta.tamanho);
+        if(existente) existente.qtd += itemConta.qtd;
+        else carrinho.push(itemConta);
+      });
+      atualizarCarrinhoVisual();
+    }catch(e){}
+    sincronizandoCarrinho = false;
+    sincronizarCarrinhoConta();
+  }
+
+  function renderizarCarrinhoConta(){
+    const box = document.getElementById('carrinho-conta-lista');
+    if(!box) return;
+    if(!carrinho.length){ box.innerHTML = '<p style="font-size:12px;color:var(--teal-muted);">O teu carrinho está vazio.</p>'; return; }
+    box.innerHTML = carrinho.map(i => `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div style="width:44px;height:44px;flex-shrink:0;background:var(--placeholder-bg);overflow:hidden;">
+          ${i.img ? `<img src="${i.img}" alt="${i.nome}" style="width:100%;height:100%;object-fit:cover;display:block;">` : ''}
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:12px;color:var(--green);">${i.nome}</div>
+          <div style="font-size:10.5px;color:var(--teal-muted);">${i.cor?`${i.cor} `:''}${i.tamanho?`· ${i.tamanho} `:''}· ${i.qtd}x</div>
+        </div>
+        <div style="font-size:12px;font-weight:700;color:var(--gold);">${i.preco*i.qtd} MT</div>
+      </div>
+    `).join('') + `<button class="conta-btn-principal" style="margin-top:10px;" onclick="continuarCompraDaConta()">Continuar a Compra</button>`;
+  }
+
+  function continuarCompraDaConta(){
+    toggleConta(false);
+    toggleCart(true);
   }
 
   async function carregarPedidosCliente(userId){
@@ -2377,6 +2482,8 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   // ─── Actualizar visual do carrinho ───
   function atualizarCarrinhoVisual(){
     salvarCarrinhoLS();
+    sincronizarCarrinhoConta();
+    renderizarCarrinhoConta();
     const container = document.getElementById('cart-items-container');
     const badge = document.getElementById('cart-badge');
     const totalVal = document.getElementById('cart-total-value');
@@ -2448,14 +2555,20 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     try{
       const { data } = await supa.auth.getSession();
       if(data && data.session){
-        const { data: cliente } = await supa.from('clientes').select('nome,telefone,morada').eq('user_id', data.session.user.id).maybeSingle();
+        const { data: cliente } = await supa.from('clientes').select('nome,telefone,pais,provincia,distrito,bairro').eq('user_id', data.session.user.id).maybeSingle();
         if(cliente){
           const campoNome = document.getElementById('client-name');
           const campoTel = document.getElementById('client-phone');
-          const campoLoc = document.getElementById('client-location');
+          const campoPais = document.getElementById('client-pais');
+          const campoProvincia = document.getElementById('client-provincia');
+          const campoDistrito = document.getElementById('client-distrito');
+          const campoBairro = document.getElementById('client-bairro');
           if(cliente.nome && !campoNome.value) campoNome.value = cliente.nome;
           if(cliente.telefone && !campoTel.value) campoTel.value = cliente.telefone;
-          if(cliente.morada && !campoLoc.value) campoLoc.value = cliente.morada;
+          if(cliente.pais && campoPais) campoPais.value = cliente.pais;
+          if(cliente.provincia && !campoProvincia.value) campoProvincia.value = cliente.provincia;
+          if(cliente.distrito && !campoDistrito.value) campoDistrito.value = cliente.distrito;
+          if(cliente.bairro && !campoBairro.value) campoBairro.value = cliente.bairro;
         }
       }
     }catch(e){}
@@ -2471,20 +2584,25 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     if(carrinho.length === 0){ showToast('O seu carrinho está vazio.'); return; }
     const nome = document.getElementById('client-name').value.trim();
     const celular = document.getElementById('client-phone').value.trim();
-    const localizacao = document.getElementById('client-location').value.trim();
+    const pais = document.getElementById('client-pais').value.trim();
+    const provincia = document.getElementById('client-provincia').value.trim();
+    const distrito = document.getElementById('client-distrito').value.trim();
+    const bairro = document.getElementById('client-bairro').value.trim();
     const notas = document.getElementById('cart-order-notes').value.trim();
 
     if(!nome){ showToast('Por favor, introduza o seu Nome Completo.'); return; }
     if(!celular){ showToast('Por favor, introduza o seu Número de Celular.'); return; }
-    if(!localizacao){ showToast('Por favor, introduza a sua Localização.'); return; }
+    if(!pais || !provincia || !distrito || !bairro){ showToast('Por favor, preencha País, Província, Distrito e Bairro.'); return; }
+
+    const localizacao = `${bairro}, ${distrito}, ${provincia}, ${pais}`;
 
     supa.auth.getSession().then(({data}) => {
       if(data && data.session){
-        supa.from('clientes').upsert({ user_id:data.session.user.id, nome, telefone:celular, morada:localizacao }).then(()=>{});
+        supa.from('clientes').upsert({ user_id:data.session.user.id, nome, telefone:celular, pais, provincia, distrito, bairro }).then(()=>{});
       }
     }).catch(()=>{});
 
-    let msg = `Olá Royalty Maculuve! 👋\n\n👤 *DADOS DO CLIENTE*\n• Nome: ${nome}\n• Celular: ${celular}\n• Localização: ${localizacao}\n\n🛍️ *DETALHES DO PEDIDO*\n`;
+    let msg = `Olá Royalty Maculuve! 👋\n\n👤 *DADOS DO CLIENTE*\n• Nome: ${nome}\n• Celular: ${celular}\n• País: ${pais}\n• Província: ${provincia}\n• Distrito: ${distrito}\n• Bairro: ${bairro}\n\n🛍️ *DETALHES DO PEDIDO*\n`;
     carrinho.forEach((item,i) => {
       msg += `${i+1}. ${item.nome}\n`;
       if(item.cor || item.tamanho) msg += `   ${item.cor?`🎨 Cor: ${item.cor} `:''}${item.tamanho?`📏 Tam: ${item.tamanho}`:''}\n`;
@@ -2510,7 +2628,7 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
 
     sbGuardarPedido(
-      { nome, telefone:celular, localizacao, notas },
+      { nome, telefone:celular, localizacao, pais, provincia, distrito, bairro, notas },
       carrinho.map(i => ({ id:i.id, nome:i.nome, cor:i.cor, tamanho:i.tamanho, qtd:i.qtd, preco:i.preco })),
       subtotal, desconto, total, cupaoAplicado && cupaoInfo ? cupaoInfo.codigo : null
     );
