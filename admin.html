@@ -296,12 +296,6 @@
           <button class="btn-sm cinza" onclick="fecharProdutosCategoria()">✕ Fechar</button>
         </div>
         <div class="produtos-lista" id="categoria-produtos-lista"></div>
-
-        <div style="margin-top:24px;padding-top:20px;border-top:1px dashed var(--border);">
-          <div class="sec-titulo" style="margin:0 0 6px;border:none;padding:0;font-size:0.85rem;">➕ Adicionar produtos sem categoria</div>
-          <div style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;">Produtos que ainda não têm nenhuma categoria — escolhe quais entram nesta.</div>
-          <div class="produtos-lista" id="categoria-sem-cat-lista"></div>
-        </div>
       </div>
     </div>
 
@@ -587,7 +581,18 @@
 
     <!-- SITE -->
     <div class="tab-content" id="tab-site">
-      <div class="sec-titulo">📖 Texto "Sobre Nós"</div>
+      <div class="sec-titulo">🔐 Login da Loja</div>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="form-grupo full"><label class="form-label">Imagem/Logo do círculo (aparece no painel de login/registo da loja)</label><input class="form-input" id="cfg-logo-login" placeholder="https://i.ibb.co/...">
+            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'cfg-logo-login','cfg-logo-login-status')"></label><span class="upload-status" id="cfg-logo-login-status"></span></div>
+          </div>
+        </div>
+        <div class="form-acoes"><button class="btn-guardar" onclick="guardarLogoLogin()">Guardar</button></div>
+        <div class="form-msg" id="cfg-logo-login-msg"></div>
+      </div>
+
+      <div class="sec-titulo" style="margin-top:32px;">📖 Texto "Sobre Nós"</div>
       <div class="form-card">
         <div class="form-grid">
           <div class="form-grupo full"><label class="form-label">O Começo (1º parágrafo)</label><textarea class="form-input" id="cfg-sobre-p1" rows="3"></textarea></div>
@@ -753,7 +758,7 @@
     if(tab==='relatorios') carregarRelatorios(7);
     if(tab==='galeria'){ carregarGaleriaAdmin(); carregarLogoGaleriaConfig(); }
     if(tab==='colecoes'){ carregarMarcantes(); carregarNovasColecoes(); carregarLancamento(); carregarBannersColecoes(); }
-    if(tab==='site'){ carregarSobreNos(); carregarContactosConfig(); carregarNewsletter(); }
+    if(tab==='site'){ carregarSobreNos(); carregarContactosConfig(); carregarNewsletter(); carregarLogoLogin(); }
     if(tab==='actividade') carregarActividade();
   }
 
@@ -1042,10 +1047,10 @@ _Inhambane, Moçambique_`;
     titulo.textContent=`🛍️ Produtos em "${nome}"`;
     lista.innerHTML='<div class="loading">A carregar...</div>';
     box.style.display='block';
-    box.dataset.categoriaActual=nome;
     box.scrollIntoView({behavior:'smooth'});
     const data=await sbGet('produtos',`categoria=eq.${encodeURIComponent(nome)}&order=ordem.asc`);
-    lista.innerHTML = data.length ? data.map(p=>`<div class="produto-card ${!p.activo?'inactivo':''}">
+    if(!data.length){lista.innerHTML='<div class="vazio">Sem produtos nesta categoria.</div>';return;}
+    lista.innerHTML=data.map(p=>`<div class="produto-card ${!p.activo?'inactivo':''}">
       <img class="produto-img" src="${(p.imagens&&p.imagens[0])||''}" alt="${p.nome}" onerror="this.style.display='none'">
       <div class="produto-info">
         <div class="produto-nome">${p.activo?'':'<span class=\\"tag inactivo\\">Inactivo</span> '}${p.nome}</div>
@@ -1053,41 +1058,8 @@ _Inhambane, Moçambique_`;
       </div>
       <div class="produto-acoes">
         <button class="btn-sm verde" onclick="editarProdutoDeCategoria(${p.id})">✏️ Editar</button>
-        <button class="btn-sm vermelho" onclick="removerProdutoDaCategoria(${p.id},'${nome.replace(/'/g,"\\'")}')">Remover da categoria</button>
-      </div>
-    </div>`).join('') : '<div class="vazio">Sem produtos nesta categoria.</div>';
-
-    carregarProdutosSemCategoria(nome);
-  }
-
-  async function carregarProdutosSemCategoria(nome){
-    const listaSemCat=document.getElementById('categoria-sem-cat-lista');
-    if(!listaSemCat) return;
-    listaSemCat.innerHTML='<div class="loading">A carregar...</div>';
-    const data=await sbGet('produtos','categoria=is.null&order=ordem.asc');
-    if(!data.length){listaSemCat.innerHTML='<div class="vazio">Não há produtos sem categoria.</div>';return;}
-    listaSemCat.innerHTML=data.map(p=>`<div class="produto-card">
-      <img class="produto-img" src="${(p.imagens&&p.imagens[0])||''}" alt="${p.nome}" onerror="this.style.display='none'">
-      <div class="produto-info">
-        <div class="produto-nome">${p.nome}</div>
-        <div class="produto-meta">${p.preco} MT</div>
-      </div>
-      <div class="produto-acoes">
-        <button class="btn-sm activar" onclick="adicionarProdutoACategoria(${p.id},'${nome.replace(/'/g,"\\'")}')">+ Adicionar a esta categoria</button>
       </div>
     </div>`).join('');
-  }
-
-  async function adicionarProdutoACategoria(id,nome){
-    await sbPatch('produtos',`id=eq.${id}`,{categoria:nome});
-    registrarLog('Produto adicionado à categoria',nome);
-    verProdutosCategoria(nome);
-  }
-
-  async function removerProdutoDaCategoria(id,nome){
-    await sbPatch('produtos',`id=eq.${id}`,{categoria:null});
-    registrarLog('Produto removido da categoria',nome);
-    verProdutosCategoria(nome);
   }
 
   function fecharProdutosCategoria(){document.getElementById('categoria-produtos-box').style.display='none';}
@@ -1751,6 +1723,20 @@ ${linkProduto}
   }
 
   // ── Sobre Nós ──
+  async function carregarLogoLogin(){
+    const data=await sbGet('configuracoes','chave=eq.logo_login');
+    document.getElementById('cfg-logo-login').value=(data[0]&&data[0].valor)||'';
+  }
+
+  async function guardarLogoLogin(){
+    const url=document.getElementById('cfg-logo-login').value.trim();
+    const msgEl=document.getElementById('cfg-logo-login-msg');
+    msgEl.className='';msgEl.textContent='A guardar...';
+    const ok=await guardarConfiguracao('logo_login', url);
+    if(ok){msgEl.className='msg-ok';msgEl.textContent='✅ Guardado!';registrarLog('Logo do login actualizado','Site');}
+    else{msgEl.className='msg-err';msgEl.textContent='Erro ao guardar.';}
+  }
+
   async function carregarSobreNos(){
     const chaves=['sobre_p1','sobre_p2','sobre_p3','sobre_citacao','sobre_autor','sobre_final'];
     const data=await sbGet('configuracoes',`chave=in.(${chaves.join(',')})`);

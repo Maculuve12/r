@@ -1003,6 +1003,69 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     font-family:inherit;
   }
 
+  /* ===== Cartão de Conta (login/registo) ===== */
+  .conta-card{
+    background:var(--white);
+    border:1px solid var(--border);
+    box-shadow:0 8px 28px rgba(20,45,41,0.08);
+    padding:32px 22px 26px;
+    text-align:center;
+  }
+
+  .conta-logo-mark{
+    width:64px;height:64px;
+    margin:0 auto 10px;
+    border-radius:50%;
+    border:1px dashed var(--border);
+    background-color:var(--off-white);
+    background-size:cover;
+    background-position:center;
+  }
+
+  .conta-marca{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:4px;
+    color:var(--green);
+    margin-bottom:18px;
+  }
+
+  .conta-saudacao{
+    font-size:17px;
+    font-weight:700;
+    color:var(--green);
+    margin-bottom:22px;
+  }
+
+  .conta-card .form-group{ text-align:left; }
+
+  .conta-input{
+    border:1px solid var(--border);
+    padding:11px 12px;
+    border-radius:8px;
+    background:var(--off-white);
+  }
+
+  .conta-input:focus{
+    outline:none;
+    border-color:var(--gold);
+  }
+
+  .conta-btn-principal{
+    width:100%;
+    background:linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+    color:var(--white);
+    border:none;
+    padding:14px;
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    font-weight:700;
+    border-radius:24px;
+    cursor:pointer;
+    box-shadow:0 6px 16px rgba(20,45,41,0.25);
+  }
+
   /* ===== TOAST ===== */
   .toast{
     position:fixed;
@@ -1415,44 +1478,59 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
 
       <!-- Entrar -->
       <div id="conta-form-entrar">
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" id="entrar-email" placeholder="teu@email.com">
+        <div class="conta-card">
+          <div class="conta-logo-mark"></div>
+          <div class="conta-marca">ROYALTY</div>
+          <h4 class="conta-saudacao">Bem-vindo(a) de volta</h4>
+
+          <div class="form-group">
+            <label class="form-label">Endereço de Email</label>
+            <input type="email" class="form-input conta-input" id="entrar-email" placeholder="teu@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Palavra-passe</label>
+            <input type="password" class="form-input conta-input" id="entrar-senha" placeholder="••••••••">
+          </div>
+          <p style="text-align:right;margin:-4px 0 14px;">
+            <a href="#" onclick="recuperarPassword();return false;" style="font-size:11px;color:var(--teal-muted);">Esqueceste-te da password?</a>
+          </p>
+          <div class="cupao-msg" id="entrar-msg" style="margin-bottom:10px;"></div>
+          <button class="conta-btn-principal" onclick="entrarConta()">Entrar</button>
+          <p style="font-size:12px;text-align:center;margin-top:16px;color:var(--teal-muted);">
+            Ainda não és membro? <a href="#" onclick="mostrarFormConta('criar');return false;" style="color:var(--gold);font-weight:700;">Criar Conta</a>
+          </p>
         </div>
-        <div class="form-group">
-          <label class="form-label">Palavra-passe</label>
-          <input type="password" class="form-input" id="entrar-senha" placeholder="••••••••">
-        </div>
-        <div class="cupao-msg" id="entrar-msg" style="margin-bottom:10px;"></div>
-        <button class="cart-checkout-btn" onclick="entrarConta()">Entrar</button>
-        <p style="font-size:12px;text-align:center;margin-top:14px;color:var(--teal-muted);">
-          Ainda não tens conta? <a href="#" onclick="mostrarFormConta('criar');return false;" style="color:var(--gold);font-weight:600;">Criar conta</a>
-        </p>
       </div>
 
       <!-- Criar Conta -->
       <div id="conta-form-criar" style="display:none;">
-        <div class="form-group">
-          <label class="form-label">Nome Completo</label>
-          <input type="text" class="form-input" id="criar-nome" placeholder="Ex: João Silva">
+        <div class="conta-card">
+          <div class="conta-logo-mark"></div>
+          <div class="conta-marca">ROYALTY</div>
+          <h4 class="conta-saudacao">Cria a Tua Conta</h4>
+
+          <div class="form-group">
+            <label class="form-label">Nome Completo</label>
+            <input type="text" class="form-input conta-input" id="criar-nome" placeholder="Ex: João Silva">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Endereço de Email</label>
+            <input type="email" class="form-input conta-input" id="criar-email" placeholder="teu@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Número de Celular</label>
+            <input type="tel" class="form-input conta-input" id="criar-telefone" placeholder="Ex: 841234567">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Palavra-passe</label>
+            <input type="password" class="form-input conta-input" id="criar-senha" placeholder="Mínimo 6 caracteres">
+          </div>
+          <div class="cupao-msg" id="criar-msg" style="margin-bottom:10px;"></div>
+          <button class="conta-btn-principal" onclick="criarConta()">Criar Conta</button>
+          <p style="font-size:12px;text-align:center;margin-top:16px;color:var(--teal-muted);">
+            Já és membro? <a href="#" onclick="mostrarFormConta('entrar');return false;" style="color:var(--gold);font-weight:700;">Entrar</a>
+          </p>
         </div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" id="criar-email" placeholder="teu@email.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Número de Celular</label>
-          <input type="tel" class="form-input" id="criar-telefone" placeholder="Ex: 841234567">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Palavra-passe</label>
-          <input type="password" class="form-input" id="criar-senha" placeholder="Mínimo 6 caracteres">
-        </div>
-        <div class="cupao-msg" id="criar-msg" style="margin-bottom:10px;"></div>
-        <button class="cart-checkout-btn" onclick="criarConta()">Criar Conta</button>
-        <p style="font-size:12px;text-align:center;margin-top:14px;color:var(--teal-muted);">
-          Já tens conta? <a href="#" onclick="mostrarFormConta('entrar');return false;" style="color:var(--gold);font-weight:600;">Entrar</a>
-        </p>
       </div>
 
     </div>
@@ -2020,6 +2098,16 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     document.getElementById('criar-msg').textContent = '';
   }
 
+  async function recuperarPassword(){
+    const email = document.getElementById('entrar-email').value.trim();
+    const msgEl = document.getElementById('entrar-msg');
+    if(!email){ msgEl.className='msg-erro'; msgEl.textContent='Escreve o teu email no campo acima primeiro.'; return; }
+    msgEl.className=''; msgEl.textContent='A enviar...';
+    const { error } = await supa.auth.resetPasswordForEmail(email);
+    if(error){ msgEl.className='msg-erro'; msgEl.textContent='Não foi possível enviar o email de recuperação.'; return; }
+    msgEl.className='msg-ok'; msgEl.textContent='Email de recuperação enviado! Verifica a tua caixa de entrada.';
+  }
+
   async function entrarConta(){
     const email = document.getElementById('entrar-email').value.trim();
     const senha = document.getElementById('entrar-senha').value;
@@ -2046,7 +2134,14 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
       email, password: senha,
       options:{ data:{ nome } }
     });
-    if(error){ msgEl.className='msg-erro'; msgEl.textContent = error.message.includes('already') ? 'Já existe uma conta com este email.' : 'Não foi possível criar a conta.'; return; }
+    if(error){
+      msgEl.className='msg-erro';
+      console.error('Erro ao criar conta:', error);
+      if(error.message && error.message.toLowerCase().includes('already')) msgEl.textContent = 'Já existe uma conta com este email.';
+      else if(error.message && error.message.toLowerCase().includes('rate limit')) msgEl.textContent = 'Foram feitos demasiados pedidos seguidos. Espera um pouco e tenta de novo.';
+      else msgEl.textContent = 'Não foi possível criar a conta: ' + (error.message || 'erro desconhecido');
+      return;
+    }
     if(!data.session){
       msgEl.className='msg-ok';
       msgEl.textContent = 'Conta criada! Verifica o teu email para confirmar antes de entrares.';
@@ -2176,6 +2271,22 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     if(data && data.session && data.session.user){
       await aplicarSessaoCliente(data.session.user);
     }
+  }
+
+  async function carregarLogoLogin(){
+    try{
+      const r = await fetch(`${SB_URL}/rest/v1/configuracoes?chave=eq.logo_login&select=valor`, {
+        headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+      });
+      const data = await r.json();
+      const url = data && data[0] && data[0].valor;
+      if(url){
+        document.querySelectorAll('.conta-logo-mark').forEach(el => {
+          el.style.backgroundImage = `url('${url}')`;
+          el.style.border = 'none';
+        });
+      }
+    }catch(e){}
   }
 
   function adicionarAoCarrinho(id){
@@ -2545,6 +2656,7 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   carregarProdutosLoja();
   carregarBanners();
   verificarSessaoCliente();
+  carregarLogoLogin();
   verificarLinkAvaliacao();
   verificarLinkProduto();
   verificarFiltroCategoria();
