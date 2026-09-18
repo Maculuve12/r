@@ -1641,19 +1641,27 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
       const { data } = await supa.auth.getSession();
       if(data && data.session){ token = data.session.access_token; uid = data.session.user.id; }
     }catch(e){}
-    fetch(`${SB_URL}/rest/v1/pedidos`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token,'Prefer':'return=minimal'},
-      body:JSON.stringify({
-        cliente_nome:cliente.nome, cliente_telefone:cliente.telefone,
-        cliente_localizacao:cliente.localizacao,
-        cliente_pais:cliente.pais||null, cliente_provincia:cliente.provincia||null,
-        cliente_distrito:cliente.distrito||null, cliente_bairro:cliente.bairro||null,
-        notas:cliente.notas||'',
-        itens:itens, subtotal:subtotal, desconto:desconto, total:total, cupao_usado:cupao||null,
-        user_id:uid
-      })
-    }).catch(function(){});
+    try{
+      const r = await fetch(`${SB_URL}/rest/v1/pedidos`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token,'Prefer':'return=minimal'},
+        body:JSON.stringify({
+          cliente_nome:cliente.nome, cliente_telefone:cliente.telefone,
+          cliente_localizacao:cliente.localizacao,
+          cliente_pais:cliente.pais||null, cliente_provincia:cliente.provincia||null,
+          cliente_distrito:cliente.distrito||null, cliente_bairro:cliente.bairro||null,
+          notas:cliente.notas||'',
+          itens:itens, subtotal:subtotal, desconto:desconto, total:total, cupao_usado:cupao||null,
+          user_id:uid
+        })
+      });
+      if(!r.ok){
+        const corpo = await r.text().catch(()=>'');
+        console.error('Falha ao gravar o pedido:', r.status, corpo);
+      }
+    }catch(e){
+      console.error('Erro de rede ao gravar o pedido:', e);
+    }
   }
 
   function sbCarrinho(produto, cor, tamanho){
@@ -2324,6 +2332,12 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     toggleCart(true);
   }
 
+  function estadoCor(estado){
+    if(estado === 'Entregue') return '#1E7B34';
+    if(estado === 'Enviado') return 'var(--gold)';
+    return 'var(--teal-muted)';
+  }
+
   async function carregarPedidosCliente(userId){
     const box = document.getElementById('pedidos-cliente-lista');
     box.innerHTML = '<p style="font-size:12px;color:var(--teal-muted);">A carregar...</p>';
@@ -2333,34 +2347,45 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
       const r = await fetch(`${SB_URL}/rest/v1/pedidos?user_id=eq.${userId}&order=criado_em.desc&select=id,itens,total,estado,criado_em`, {
         headers:{'apikey':SB_KEY,'Authorization':'Bearer '+token}
       });
+      if(!r.ok){
+        const corpo = await r.text().catch(()=>'');
+        console.error('Falha ao carregar pedidos:', r.status, corpo);
+        box.innerHTML = '<p style="font-size:12px;color:var(--teal-muted);">Não foi possível carregar os pedidos.</p>';
+        return;
+      }
       const data = await r.json();
-      if(!data || !data.length){ box.innerHTML = '<p style="font-size:12px;color:var(--teal-muted);">Ainda não tens pedidos.</p>'; return; }
+      if(!Array.isArray(data) || !data.length){ box.innerHTML = '<p style="font-size:12px;color:var(--teal-muted);">Ainda não tens pedidos.</p>'; return; }
 
-      const idsProdutos = [...new Set(data.flatMap(p => (p.itens||[]).map(i => i.id)).filter(Boolean))];
       let imagemPorId = {};
-      if(idsProdutos.length){
-        const rImg = await fetch(`${SB_URL}/rest/v1/produtos?id=in.(${idsProdutos.join(',')})&select=id,imagens`, {
-          headers:{'apikey':SB_KEY,'Authorization':'Bearer '+token}
-        });
-        const produtosImg = await rImg.json().catch(() => []);
-        (produtosImg||[]).forEach(pr => { imagemPorId[pr.id] = (pr.imagens && pr.imagens[0]) || ''; });
+      try{
+        const idsProdutos = [...new Set(data.flatMap(p => (Array.isArray(p.itens)?p.itens:[]).map(i => i && i.id)).filter(Boolean))];
+        if(idsProdutos.length){
+          const rImg = await fetch(`${SB_URL}/rest/v1/produtos?id=in.(${idsProdutos.join(',')})&select=id,imagens`, {
+            headers:{'apikey':SB_KEY,'Authorization':'Bearer '+token}
+          });
+          const produtosImg = rImg.ok ? await rImg.json().catch(() => []) : [];
+          (produtosImg||[]).forEach(pr => { imagemPorId[pr.id] = (pr.imagens && pr.imagens[0]) || ''; });
+        }
+      }catch(eImg){
+        console.error('Não foi possível carregar as fotos dos pedidos (a lista continua):', eImg);
       }
 
-      box.innerHTML = data.map(p => {
+      box.innerHTML = data.map((p,idx) => {
         const dataFmt = p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-PT', {day:'2-digit',month:'short',year:'numeric'}) : '';
-        const itensHtml = (p.itens||[]).map(i => `
+        const itensSeguros = Array.isArray(p.itens) ? p.itens : [];
+        const itensHtml = itensSeguros.map(i => `
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
             <div style="width:44px;height:44px;flex-shrink:0;background:var(--placeholder-bg);overflow:hidden;">
-              ${imagemPorId[i.id] ? `<img src="${imagemPorId[i.id]}" alt="${i.nome}" style="width:100%;height:100%;object-fit:cover;display:block;">` : ''}
+              ${i && imagemPorId[i.id] ? `<img src="${imagemPorId[i.id]}" alt="${i.nome}" style="width:100%;height:100%;object-fit:cover;display:block;">` : ''}
             </div>
             <div style="flex:1;">
-              <div style="font-size:12px;color:var(--green);">${i.nome}</div>
-              <div style="font-size:10.5px;color:var(--teal-muted);">${i.cor?`${i.cor} `:''}${i.tamanho?`· ${i.tamanho} `:''}· ${i.qtd}x</div>
+              <div style="font-size:12px;color:var(--green);">${i ? i.nome : ''}</div>
+              <div style="font-size:10.5px;color:var(--teal-muted);">${i && i.cor?`${i.cor} `:''}${i && i.tamanho?`· ${i.tamanho} `:''}· ${i ? i.qtd : 0}x</div>
             </div>
           </div>
         `).join('');
         return `
-          <div style="border:1px solid var(--border);padding:12px;margin-bottom:10px;">
+          <div class="pedido-item" style="border:1px solid var(--border);padding:12px;margin-bottom:10px;${idx>=3?'display:none;':''}">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
               <span style="font-size:11px;color:var(--teal-muted);">${dataFmt}</span>
               <span style="font-size:9px;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;color:${estadoCor(p.estado)};">${p.estado || 'Pendente'}</span>
@@ -2369,8 +2394,9 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
             <div style="font-size:14px;font-weight:700;color:var(--gold);text-align:right;margin-top:4px;">${p.total} MT</div>
           </div>
         `;
-      }).join('');
+      }).join('') + (data.length > 3 ? `<button class="conta-btn-principal" style="background:transparent;color:var(--green);border:1px solid var(--border);box-shadow:none;" onclick="document.querySelectorAll('#pedidos-cliente-lista .pedido-item').forEach(el=>el.style.display='block');this.remove();">Ver Mais (${data.length-3})</button>` : '');
     }catch(e){
+      console.error('Erro inesperado ao carregar pedidos:', e);
       box.innerHTML = '<p style="font-size:12px;color:var(--teal-muted);">Não foi possível carregar os pedidos.</p>';
     }
   }
@@ -2827,6 +2853,10 @@ Subtotal: {{subtotal}} MT
   verificarSessaoCliente();
   carregarLogoLogin();
   carregarTemplatePedido();
+
+  if(new URLSearchParams(window.location.search).get('conta') === '1'){
+    toggleConta(true);
+  }
   verificarLinkAvaliacao();
   verificarLinkProduto();
   verificarFiltroCategoria();

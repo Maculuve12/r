@@ -1493,21 +1493,19 @@
     c.innerHTML = `<div style="display:flex;flex-direction:column;gap:12px;">
       ${data.map(a=>`
         <div style="background:var(--white);border-radius:10px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 1px 3px rgba(0,0,0,0.04);padding:18px 20px;">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
-            <div>
-              <div style="font-size:0.8rem;font-weight:700;color:var(--g3);margin-bottom:4px;">${a.produto_nome||'—'}</div>
-              <div style="font-size:0.88rem;font-weight:800;color:var(--g1);">${a.cliente_nome}</div>
-              <div style="color:var(--gold);font-size:1rem;margin:4px 0;">${renderStars(a.estrelas)} <span style="font-size:0.75rem;color:var(--muted);font-weight:600;">${a.estrelas}/5</span></div>
-              ${a.comentario?`<div style="font-size:0.8rem;color:var(--muted);font-style:italic;">"${a.comentario}"</div>`:''}
-              <div style="font-size:0.65rem;color:var(--muted);margin-top:6px;">${new Date(a.criado_em).toLocaleDateString('pt-PT')}</div>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
-              <span class="tag ${a.aprovada?'activo':'inactivo'}">${a.aprovada?'✅ Aprovada':'⏳ Pendente'}</span>
-              ${!a.aprovada
-                ?`<button class="btn-sm activar" onclick="aprovarAvaliacao(${a.id})">Aprovar</button>`
-                :`<button class="btn-sm cinza" onclick="rejeitarAvaliacao(${a.id})">Retirar</button>`}
-              <button class="btn-sm vermelho" onclick="eliminarAvaliacao(${a.id})">🗑️</button>
-            </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--g3);">${a.produto_nome||'—'}</div>
+            <span class="tag ${a.aprovada?'activo':'inactivo'}">${a.aprovada?'✅ Aprovada':'⏳ Pendente'}</span>
+          </div>
+          <div style="font-size:0.88rem;font-weight:800;color:var(--g1);">${a.cliente_nome}</div>
+          <div style="color:var(--gold);font-size:1rem;margin:4px 0;">${renderStars(a.estrelas)} <span style="font-size:0.75rem;color:var(--muted);font-weight:600;">${a.estrelas}/5</span></div>
+          ${a.comentario?`<div style="font-size:0.8rem;color:var(--muted);font-style:italic;">"${a.comentario}"</div>`:''}
+          <div style="font-size:0.65rem;color:var(--muted);margin-top:6px;">${new Date(a.criado_em).toLocaleDateString('pt-PT')}</div>
+          <div style="display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--off);">
+            ${!a.aprovada
+              ?`<button class="btn-sm activar" onclick="aprovarAvaliacao(${a.id})">Aprovar</button>`
+              :`<button class="btn-sm cinza" onclick="rejeitarAvaliacao(${a.id})">Retirar</button>`}
+            <button class="btn-sm vermelho" onclick="eliminarAvaliacao(${a.id})">🗑️ Eliminar</button>
           </div>
         </div>
       `).join('')}
