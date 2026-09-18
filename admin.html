@@ -12,53 +12,53 @@
     :root{--g1:#1d2a20;--g2:#2e4031;--g3:#435c47;--white:#fff;--off:#f5f7f5;--muted:#6b7c70;--accent:#d1ded4;--gold:#c8a060;--red:#c0392b;--green:#2e7d32;}
     body{font-family:'Montserrat',sans-serif;background:var(--off);color:#111c16;min-height:100vh;}
     .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--g1);}
-    .login-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:48px 40px;width:100%;max-width:380px;text-align:center;}
+    .login-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:48px 40px;width:100%;max-width:380px;text-align:center;}
     .login-logo{font-size:2rem;font-weight:800;color:var(--white);letter-spacing:0.2em;margin-bottom:6px;}
     .login-sub{font-size:0.7rem;font-weight:600;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:36px;}
-    .login-input{width:100%;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:3px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:0.9rem;text-align:center;letter-spacing:0.15em;outline:none;margin-bottom:14px;}
+    .login-input{width:100%;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:0.9rem;text-align:center;letter-spacing:0.05em;outline:none;margin-bottom:14px;}
     .login-input:focus{border-color:var(--gold);}
     .login-input::placeholder{color:rgba(255,255,255,0.3);}
-    .login-btn{width:100%;padding:14px;background:var(--gold);color:var(--g1);border:none;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:0.82rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;}
+    .login-btn{width:100%;padding:14px;background:var(--gold);color:var(--g1);border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;}
     .login-erro{color:#e74c3c;font-size:0.78rem;font-weight:600;margin-top:12px;}
     .painel{display:none;}
     .topo{background:var(--g1);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-    .topo-marca{font-size:1rem;font-weight:800;color:var(--white);letter-spacing:0.15em;}
-    .topo-sub{font-size:0.62rem;font-weight:600;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;}
+    .topo-marca{font-size:1.05rem;font-weight:800;color:var(--white);letter-spacing:0.1em;}
+    .topo-sub{font-size:0.65rem;font-weight:600;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;}
     .topo-acoes{display:flex;gap:8px;}
-    .btn-topo{padding:8px 14px;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;border:none;letter-spacing:0.06em;white-space:nowrap;}
+    .btn-topo{padding:9px 16px;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:0.76rem;font-weight:600;cursor:pointer;border:none;white-space:nowrap;}
     .btn-topo.cinza{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--white);}
     .btn-topo.sair{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted);}
     .tabs{display:flex;background:var(--white);border-bottom:2px solid var(--accent);padding:0 20px;overflow-x:auto;}
-    .tab{padding:12px 14px;font-size:0.66rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.2s;white-space:nowrap;}
+    .tab{padding:14px 16px;font-size:0.74rem;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.2s;white-space:nowrap;}
     .tab.active{color:var(--g2);border-bottom-color:var(--g2);}
-    .conteudo{padding:20px;max-width:1200px;margin:0 auto;}
+    .conteudo{padding:24px;max-width:1200px;margin:0 auto;}
     .tab-content{display:none;}
     .tab-content.active{display:block;}
-    .resumo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:24px;}
-    .resumo-card{background:var(--white);border-radius:4px;padding:18px 20px;border:1px solid rgba(0,0,0,0.06);}
-    .resumo-label{font-size:0.6rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+    .resumo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:16px;margin-bottom:28px;}
+    .resumo-card{background:var(--white);border-radius:10px;padding:20px 22px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+    .resumo-label{font-size:0.72rem;font-weight:600;color:var(--muted);margin-bottom:8px;}
     .resumo-valor{font-size:1.5rem;font-weight:800;color:var(--g1);line-height:1;}
     .resumo-valor.verde{color:var(--green);}
     .resumo-valor.dourado{color:var(--gold);}
     .resumo-valor.vermelho{color:var(--red);}
-    .sec-titulo{font-size:0.7rem;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--g3);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--accent);}
-    .ranking-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:24px;}
-    .ranking-card{background:var(--white);border-radius:4px;padding:16px 18px;border:1px solid rgba(0,0,0,0.06);position:relative;}
+    .sec-titulo{font-size:0.78rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--g3);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--accent);}
+    .ranking-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:28px;}
+    .ranking-card{background:var(--white);border-radius:10px;padding:18px 20px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 1px 3px rgba(0,0,0,0.04);position:relative;}
     .ranking-card.primeiro::before{content:'🏆';position:absolute;top:10px;right:12px;font-size:1.1rem;}
-    .ranking-nome{font-size:0.8rem;font-weight:700;color:var(--g1);text-transform:uppercase;margin-bottom:12px;}
-    .ranking-stat{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--off);font-size:0.72rem;}
+    .ranking-nome{font-size:0.85rem;font-weight:700;color:var(--g1);margin-bottom:12px;}
+    .ranking-stat{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--off);font-size:0.78rem;}
     .ranking-stat:last-child{border-bottom:none;}
     .ranking-stat-lbl{color:var(--muted);font-weight:600;}
     .ranking-stat-val{font-weight:800;color:var(--g2);}
     .barra-wrap{margin-top:10px;}
     .barra-bg{height:4px;background:var(--accent);border-radius:10px;overflow:hidden;}
     .barra-fill{height:100%;background:var(--g2);border-radius:10px;}
-    .wrap-tabela{background:var(--white);border-radius:4px;border:1px solid rgba(0,0,0,0.06);overflow:hidden;margin-bottom:24px;overflow-x:auto;}
-    .tabela{width:100%;border-collapse:collapse;font-size:0.77rem;}
-    .tabela th{background:var(--g1);color:var(--accent);padding:10px 14px;text-align:left;font-size:0.59rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;}
-    .tabela td{padding:12px 14px;border-bottom:1px solid var(--off);color:var(--g1);font-weight:500;vertical-align:top;}
+    .wrap-tabela{background:var(--white);border-radius:10px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 1px 3px rgba(0,0,0,0.04);overflow:hidden;margin-bottom:28px;overflow-x:auto;}
+    .tabela{width:100%;border-collapse:collapse;font-size:0.82rem;}
+    .tabela th{background:var(--g1);color:var(--accent);padding:12px 16px;text-align:left;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;}
+    .tabela td{padding:13px 16px;border-bottom:1px solid var(--off);color:var(--g1);font-weight:500;vertical-align:top;}
     .tabela tr:hover td{background:var(--off);}
-    .tag{display:inline-block;padding:2px 8px;border-radius:2px;font-size:0.64rem;font-weight:700;}
+    .tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;}
     .tag.cupao{background:#e8f5e9;color:var(--green);}
     .tag.pendente{background:#fff3e0;color:#e65100;}
     .tag.enviado{background:#e3f2fd;color:#1565c0;}
@@ -66,74 +66,74 @@
     .tag.activo{background:#e8f5e9;color:var(--green);}
     .tag.inactivo{background:#f5f5f5;color:#999;}
     .total-dest{font-weight:800;color:var(--g2);}
-    .itens-lista{font-size:0.69rem;color:var(--muted);line-height:1.7;}
-    .select-estado{padding:4px 8px;border:1px solid var(--accent);border-radius:3px;font-family:'Montserrat',sans-serif;font-size:0.71rem;font-weight:600;color:var(--g1);background:var(--white);cursor:pointer;}
-    .filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;}
-    .filtro-input{padding:8px 11px;border:1px solid var(--accent);border-radius:3px;font-family:'Montserrat',sans-serif;font-size:0.76rem;color:var(--g1);outline:none;}
+    .itens-lista{font-size:0.75rem;color:var(--muted);line-height:1.7;}
+    .select-estado{padding:6px 10px;border:1px solid var(--accent);border-radius:8px;font-family:'Montserrat',sans-serif;font-size:0.78rem;font-weight:600;color:var(--g1);background:var(--white);cursor:pointer;}
+    .filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;align-items:center;}
+    .filtro-input{padding:9px 12px;border:1px solid var(--accent);border-radius:8px;font-family:'Montserrat',sans-serif;font-size:0.82rem;color:var(--g1);outline:none;}
     .filtro-input:focus{border-color:var(--g3);}
-    .btn-filtrar{padding:8px 16px;background:var(--g2);color:#fff;border:none;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:0.74rem;font-weight:700;cursor:pointer;}
-    .periodo-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
-    .btn-periodo{padding:7px 14px;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;border:1.5px solid var(--accent);background:var(--white);color:var(--muted);transition:all 0.15s;}
+    .btn-filtrar{padding:9px 18px;background:var(--g2);color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;}
+    .periodo-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+    .btn-periodo{padding:8px 16px;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:0.76rem;font-weight:700;cursor:pointer;border:1.5px solid var(--accent);background:var(--white);color:var(--muted);transition:all 0.15s;}
     .btn-periodo.active{background:var(--g2);color:#fff;border-color:var(--g2);}
-    .periodo-custom{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
-    .grafico-wrap{background:var(--white);border-radius:4px;border:1px solid rgba(0,0,0,0.06);padding:20px;margin-bottom:24px;}
-    .grafico-titulo{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--g3);margin-bottom:14px;}
-    .graficos-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
-    .form-card{background:var(--white);border-radius:4px;border:1px solid rgba(0,0,0,0.06);padding:22px;margin-bottom:20px;}
-    .form-titulo{font-size:0.78rem;font-weight:800;color:var(--g1);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:18px;}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-    .form-grupo{display:flex;flex-direction:column;gap:4px;}
+    .periodo-custom{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:18px;}
+    .grafico-wrap{background:var(--white);border-radius:10px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 1px 3px rgba(0,0,0,0.04);padding:22px;margin-bottom:28px;}
+    .grafico-titulo{font-size:0.78rem;font-weight:700;color:var(--g3);margin-bottom:16px;}
+    .graficos-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}
+    .form-card{background:var(--white);border-radius:10px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 1px 3px rgba(0,0,0,0.04);padding:24px;margin-bottom:24px;}
+    .form-titulo{font-size:0.88rem;font-weight:800;color:var(--g1);margin-bottom:18px;}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .form-grupo{display:flex;flex-direction:column;gap:5px;}
     .form-grupo.full{grid-column:1/-1;}
-    .form-label{font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--g3);}
-    .form-input{padding:9px 11px;border:1px solid var(--accent);border-radius:3px;font-family:'Montserrat',sans-serif;font-size:0.79rem;font-weight:500;color:var(--g1);outline:none;width:100%;}
+    .form-label{font-size:0.74rem;font-weight:600;color:var(--g3);}
+    .form-input{padding:10px 12px;border:1px solid var(--accent);border-radius:8px;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:500;color:var(--g1);outline:none;width:100%;}
     .form-input:focus{border-color:var(--g3);}
-    .form-dica{font-size:0.62rem;color:var(--muted);margin-top:2px;}
-    .form-acoes{display:flex;gap:10px;margin-top:16px;}
-    .btn-guardar{padding:10px 24px;background:var(--g2);color:#fff;border:none;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer;}
-    .btn-cancelar{padding:10px 16px;background:transparent;border:1px solid var(--accent);color:var(--muted);border-radius:3px;font-family:'Montserrat',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer;}
-    .btn-sm{padding:6px 12px;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:0.67rem;font-weight:700;cursor:pointer;border:none;}
+    .form-dica{font-size:0.7rem;color:var(--muted);margin-top:2px;}
+    .form-acoes{display:flex;gap:10px;margin-top:18px;}
+    .btn-guardar{padding:11px 26px;background:var(--g2);color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;}
+    .btn-cancelar{padding:11px 18px;background:transparent;border:1px solid var(--accent);color:var(--muted);border-radius:8px;font-family:'Montserrat',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;}
+    .btn-sm{padding:7px 14px;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:0.74rem;font-weight:700;cursor:pointer;border:none;}
     .btn-sm.verde{background:var(--g2);color:#fff;}
     .btn-sm.cinza{background:transparent;border:1px solid var(--accent);color:var(--muted);}
-    .btn-sm.activar{background:var(--green);color:#fff;}
+    .btn-sm.activar{background:var(--g2);color:#fff;}
     .btn-sm.vermelho{background:transparent;border:1px solid #e74c3c;color:#e74c3c;}
-    .upload-status{font-size:0.65rem;color:var(--muted);font-weight:600;}
+    .upload-status{font-size:0.72rem;color:var(--muted);font-weight:600;}
     .upload-status.ok{color:var(--green);}
     .upload-status.erro{color:var(--red);}
     .upload-linha{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap;}
-    .btn-sm.gold{background:var(--gold);color:var(--g1);}
-    .msg-ok{color:var(--green);font-size:0.74rem;font-weight:600;margin-top:10px;}
-    .msg-err{color:var(--red);font-size:0.74rem;font-weight:600;margin-top:10px;}
-    .vazio{text-align:center;padding:40px 20px;color:var(--muted);font-size:0.82rem;}
-    .loading{text-align:center;padding:40px;color:var(--muted);font-size:0.77rem;font-weight:600;}
-    .ultima-at{font-size:0.65rem;color:var(--muted);text-align:right;margin-bottom:16px;}
-    .produtos-lista{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
-    .produto-card{background:var(--white);border-radius:4px;border:1px solid rgba(0,0,0,0.06);padding:16px 18px;display:flex;gap:14px;align-items:flex-start;}
+    .btn-sm.gold{background:transparent;border:1px solid var(--gold);color:#8a6a2f;}
+    .msg-ok{color:var(--green);font-size:0.8rem;font-weight:600;margin-top:10px;}
+    .msg-err{color:var(--red);font-size:0.8rem;font-weight:600;margin-top:10px;}
+    .vazio{text-align:center;padding:40px 20px;color:var(--muted);font-size:0.88rem;}
+    .loading{text-align:center;padding:40px;color:var(--muted);font-size:0.82rem;font-weight:600;}
+    .ultima-at{font-size:0.72rem;color:var(--muted);text-align:right;margin-bottom:18px;}
+    .produtos-lista{display:flex;flex-direction:column;gap:14px;margin-bottom:28px;}
+    .produto-card{background:var(--white);border-radius:10px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 1px 3px rgba(0,0,0,0.04);padding:18px 20px;display:flex;gap:14px;align-items:flex-start;}
     .produto-card.inactivo{opacity:0.5;}
-    .produto-img{width:60px;height:75px;object-fit:cover;border-radius:3px;flex-shrink:0;background:var(--off);}
+    .produto-img{width:60px;height:75px;object-fit:cover;border-radius:8px;flex-shrink:0;background:var(--off);}
     .produto-info{flex:1;}
-    .produto-nome{font-size:0.86rem;font-weight:800;color:var(--g1);text-transform:uppercase;margin-bottom:3px;}
-    .produto-preco{font-size:0.79rem;font-weight:700;color:var(--g2);margin-bottom:5px;}
-    .produto-meta{font-size:0.69rem;color:var(--muted);font-weight:500;}
+    .produto-nome{font-size:0.92rem;font-weight:700;color:var(--g1);margin-bottom:3px;}
+    .produto-preco{font-size:0.85rem;font-weight:700;color:var(--g2);margin-bottom:5px;}
+    .produto-meta{font-size:0.76rem;color:var(--muted);font-weight:500;}
     .produto-acoes{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
-    .clientes-lista{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
-    .cliente-card{background:var(--white);border-radius:4px;border:1px solid rgba(0,0,0,0.06);padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;}
-    .cliente-nome{font-size:0.86rem;font-weight:800;color:var(--g1);margin-bottom:3px;}
-    .cliente-tel{font-size:0.73rem;color:var(--muted);font-weight:500;}
+    .clientes-lista{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
+    .cliente-card{background:var(--white);border-radius:10px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 1px 3px rgba(0,0,0,0.04);padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+    .cliente-nome{font-size:0.9rem;font-weight:700;color:var(--g1);margin-bottom:3px;}
+    .cliente-tel{font-size:0.78rem;color:var(--muted);font-weight:500;}
     .cliente-stats{text-align:right;}
     .cliente-total{font-size:1rem;font-weight:800;color:var(--g2);}
-    .cliente-pedidos{font-size:0.69rem;color:var(--muted);font-weight:500;}
-    .cupoes-lista{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
-    .cupao-card{background:var(--white);border-radius:4px;border:1px solid rgba(0,0,0,0.06);padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
-    .cupao-codigo{font-size:1rem;font-weight:800;color:var(--g1);letter-spacing:0.1em;}
-    .cupao-nome{font-size:0.73rem;color:var(--muted);font-weight:500;}
-    .cupao-info{font-size:0.73rem;color:var(--g3);font-weight:600;}
+    .cliente-pedidos{font-size:0.76rem;color:var(--muted);font-weight:500;}
+    .cupoes-lista{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
+    .cupao-card{background:var(--white);border-radius:10px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 1px 3px rgba(0,0,0,0.04);padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+    .cupao-codigo{font-size:1rem;font-weight:800;color:var(--g1);letter-spacing:0.06em;}
+    .cupao-nome{font-size:0.78rem;color:var(--muted);font-weight:500;}
+    .cupao-info{font-size:0.78rem;color:var(--g3);font-weight:600;}
     .cupao-acoes{display:flex;gap:8px;}
-    .banners-lista{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
-    .banner-card{background:var(--white);border-radius:4px;border:1px solid rgba(0,0,0,0.06);padding:14px 16px;display:flex;gap:14px;align-items:center;}
+    .banners-lista{display:flex;flex-direction:column;gap:14px;margin-bottom:28px;}
+    .banner-card{background:var(--white);border-radius:10px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 1px 3px rgba(0,0,0,0.04);padding:16px 18px;display:flex;gap:14px;align-items:center;}
     .banner-card.inactivo{opacity:0.5;}
-    .banner-prev{width:96px;height:40px;object-fit:cover;border-radius:3px;flex-shrink:0;background:var(--off);}
+    .banner-prev{width:96px;height:40px;object-fit:cover;border-radius:8px;flex-shrink:0;background:var(--off);}
     .banner-info{flex:1;}
-    .banner-ordem{font-size:0.7rem;color:var(--muted);font-weight:600;}
+    .banner-ordem{font-size:0.76rem;color:var(--muted);font-weight:600;}
     .banner-link{font-size:0.72rem;color:var(--g3);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;}
     .banner-acoes{display:flex;gap:6px;flex-shrink:0;}
     @media(max-width:600px){.conteudo{padding:14px;}.form-grid{grid-template-columns:1fr;}.graficos-grid{grid-template-columns:1fr;}.produto-card{flex-wrap:wrap;}.produto-acoes{flex-direction:row;flex-wrap:wrap;}.banner-card{flex-wrap:wrap;}.banner-acoes{flex-wrap:wrap;}}
@@ -581,7 +581,34 @@
 
     <!-- SITE -->
     <div class="tab-content" id="tab-site">
-      <div class="sec-titulo">🔑 Administradores</div>
+      <div class="sec-titulo">✉️ Mensagens (WhatsApp)</div>
+      <div style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;">Usa os marcadores entre chavetas duplas — são substituídos automaticamente pelos dados reais ao enviar.</div>
+
+      <div class="form-card">
+        <div class="form-titulo">Mensagem do Pedido (enviada pelo cliente no checkout)</div>
+        <div style="font-size:0.68rem;color:var(--muted);margin-bottom:8px;">Marcadores: {{nome}} {{celular}} {{pais}} {{provincia}} {{distrito}} {{bairro}} {{itens}} {{subtotal}} {{desconto_linha}} {{total}} {{notas_linha}}</div>
+        <textarea class="form-input" id="msg-pedido" rows="10"></textarea>
+        <div class="form-acoes"><button class="btn-guardar" onclick="guardarMensagem('msg_pedido','msg-pedido','msg-pedido-msg')">Guardar</button></div>
+        <div class="form-msg" id="msg-pedido-msg"></div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-titulo">Mensagem de Agradecimento (enviada ao marcares "Entregue")</div>
+        <div style="font-size:0.68rem;color:var(--muted);margin-bottom:8px;">Marcadores: {{nome}} {{itens}} {{link_avaliacao}}</div>
+        <textarea class="form-input" id="msg-agradecimento" rows="10"></textarea>
+        <div class="form-acoes"><button class="btn-guardar" onclick="guardarMensagem('msg_agradecimento','msg-agradecimento','msg-agradecimento-msg')">Guardar</button></div>
+        <div class="form-msg" id="msg-agradecimento-msg"></div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-titulo">Mensagem de Novidade (enviada ao notificar novo produto)</div>
+        <div style="font-size:0.68rem;color:var(--muted);margin-bottom:8px;">Marcadores: {{produto}} {{preco}} {{preco_original_linha}} {{link_produto}}</div>
+        <textarea class="form-input" id="msg-novidade" rows="8"></textarea>
+        <div class="form-acoes"><button class="btn-guardar" onclick="guardarMensagem('msg_novidade','msg-novidade','msg-novidade-msg')">Guardar</button></div>
+        <div class="form-msg" id="msg-novidade-msg"></div>
+      </div>
+
+      <div class="sec-titulo" style="margin-top:32px;">🔑 Administradores</div>
       <div class="form-card">
         <div class="form-grid">
           <div class="form-grupo full"><label class="form-label">Email da conta a tornar admin (a conta já tem de existir)</label><input class="form-input" id="novo-admin-email" placeholder="alguem@exemplo.com"></div>
@@ -768,7 +795,7 @@
     if(tab==='relatorios') carregarRelatorios(7);
     if(tab==='galeria'){ carregarGaleriaAdmin(); carregarLogoGaleriaConfig(); }
     if(tab==='colecoes'){ carregarMarcantes(); carregarNovasColecoes(); carregarLancamento(); carregarBannersColecoes(); }
-    if(tab==='site'){ carregarSobreNos(); carregarContactosConfig(); carregarNewsletter(); carregarLogoLogin(); carregarAdmins(); }
+    if(tab==='site'){ carregarSobreNos(); carregarContactosConfig(); carregarNewsletter(); carregarLogoLogin(); carregarAdmins(); carregarMensagens(); }
     if(tab==='actividade') carregarActividade();
   }
 
@@ -888,7 +915,7 @@
     registrarLog('Desconto de stock', `Stock actualizado pelo pedido de ${pedido.cliente_nome||'—'}`);
   }
 
-  function enviarAgradecimento(pedido) {
+  async function enviarAgradecimento(pedido) {
     const nome = pedido.cliente_nome || 'Cliente';
     const tel = (pedido.cliente_telefone || '').replace(/\s/g,'');
     const itens = (pedido.itens || []).map(i=>`• ${i.qtd}x ${i.nome} (${i.cor}, ${i.tamanho})`).join('\n');
@@ -896,23 +923,13 @@
     const linkAvaliacao = primeiroProdutoId
       ? `https://maculuve12.github.io/Royalty-Maculuve-Store-/?avaliar=${primeiroProdutoId}`
       : '';
-    const msg =
-`Olá ${nome}! 👋
 
-A *Royalty Maculuve* vem agradecer a sua confiança e preferência! 🙏
-
-✅ O seu pedido foi entregue com sucesso:
-${itens}
-
-Esperamos que adore as suas peças! 😊
-
-⭐ *Deixe a sua avaliação:*
-${linkAvaliacao}
-
-A sua opinião é muito importante para nós e ajuda outros clientes!
-
-👑 *ROYALTY — Beyond Trends*
-_Inhambane, Moçambique_`;
+    const dataCfg = await sbGet('configuracoes','chave=eq.msg_agradecimento');
+    let modelo = (dataCfg[0] && dataCfg[0].valor) || MSG_AGRADECIMENTO_DEFAULT;
+    const msg = modelo
+      .replaceAll('{{nome}}', nome)
+      .replaceAll('{{itens}}', itens)
+      .replaceAll('{{link_avaliacao}}', linkAvaliacao);
 
     const numero = tel.startsWith('258') ? tel : `258${tel}`;
     window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
@@ -1169,19 +1186,15 @@ _Inhambane, Moçambique_`;
     });
 
     const linkProduto = `https://maculuve12.github.io/Royalty-Maculuve-Store-/?produto=${produto.id}`;
-    const msg =
-`Olá! 👋
+    const precoOriginalLinha = produto.preco_original ? ` (de ${produto.preco_original} MT)` : '';
 
-A *Royalty Maculuve* tem novidades para si! 🎉
-
-✨ Novo produto disponível:
-*${produto.nome}*
-💰 Preço: ${produto.preco} MT${produto.preco_original ? ` ~~${produto.preco_original} MT~~` : ''}
-
-👉 Ver e comprar agora:
-${linkProduto}
-
-👑 *ROYALTY — Beyond Trends*`;
+    const dataCfg = await sbGet('configuracoes','chave=eq.msg_novidade');
+    let modelo = (dataCfg[0] && dataCfg[0].valor) || MSG_NOVIDADE_DEFAULT;
+    const msg = modelo
+      .replaceAll('{{produto}}', produto.nome)
+      .replaceAll('{{preco}}', produto.preco)
+      .replaceAll('{{preco_original_linha}}', precoOriginalLinha)
+      .replaceAll('{{link_produto}}', linkProduto);
 
     if (clientes.length === 0) {
       alert('Sem clientes registados ainda.');
@@ -1479,10 +1492,10 @@ ${linkProduto}
     if (!data.length) { c.innerHTML='<div class="vazio">Sem avaliações ainda.</div>'; return; }
     c.innerHTML = `<div style="display:flex;flex-direction:column;gap:12px;">
       ${data.map(a=>`
-        <div style="background:var(--white);border-radius:4px;border:1px solid rgba(0,0,0,0.06);padding:16px 18px;">
+        <div style="background:var(--white);border-radius:10px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 1px 3px rgba(0,0,0,0.04);padding:18px 20px;">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
             <div>
-              <div style="font-size:0.75rem;font-weight:700;color:var(--g3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">${a.produto_nome||'—'}</div>
+              <div style="font-size:0.8rem;font-weight:700;color:var(--g3);margin-bottom:4px;">${a.produto_nome||'—'}</div>
               <div style="font-size:0.88rem;font-weight:800;color:var(--g1);">${a.cliente_nome}</div>
               <div style="color:var(--gold);font-size:1rem;margin:4px 0;">${renderStars(a.estrelas)} <span style="font-size:0.75rem;color:var(--muted);font-weight:600;">${a.estrelas}/5</span></div>
               ${a.comentario?`<div style="font-size:0.8rem;color:var(--muted);font-style:italic;">"${a.comentario}"</div>`:''}
@@ -1767,6 +1780,72 @@ ${linkProduto}
     if(error || data==='NAO_PODES_REMOVER_TI_PROPRIO'){ alert('Não podes remover o teu próprio acesso.'); return; }
     registrarLog('Admin removido', email);
     carregarAdmins();
+  }
+
+  const MSG_PEDIDO_DEFAULT = `Olá Royalty Maculuve,
+
+Gostaria de confirmar o seguinte pedido.
+
+DADOS DO CLIENTE
+Nome: {{nome}}
+Celular: {{celular}}
+País: {{pais}}
+Província: {{provincia}}
+Distrito: {{distrito}}
+Bairro: {{bairro}}
+
+DETALHES DO PEDIDO
+{{itens}}
+─────────────────────
+Subtotal: {{subtotal}} MT
+{{desconto_linha}}Total: {{total}} MT
+{{notas_linha}}`;
+
+  const MSG_AGRADECIMENTO_DEFAULT = `Olá {{nome}},
+
+A Royalty Maculuve agradece a sua confiança e preferência.
+
+O seu pedido foi entregue com sucesso:
+{{itens}}
+
+Esperamos que goste das suas peças.
+
+Deixe a sua avaliação:
+{{link_avaliacao}}
+
+A sua opinião é importante para nós e ajuda outros clientes.
+
+ROYALTY — Beyond Trends
+Inhambane, Moçambique`;
+
+  const MSG_NOVIDADE_DEFAULT = `Olá,
+
+A Royalty Maculuve tem uma novidade para si.
+
+Novo produto disponível: {{produto}}
+Preço: {{preco}} MT{{preco_original_linha}}
+
+Ver e comprar:
+{{link_produto}}
+
+ROYALTY — Beyond Trends`;
+
+  async function carregarMensagens(){
+    const data = await sbGet('configuracoes',`chave=in.(msg_pedido,msg_agradecimento,msg_novidade)`);
+    const mapa = {};
+    (data||[]).forEach(c => { mapa[c.chave] = c.valor; });
+    document.getElementById('msg-pedido').value = mapa.msg_pedido || MSG_PEDIDO_DEFAULT;
+    document.getElementById('msg-agradecimento').value = mapa.msg_agradecimento || MSG_AGRADECIMENTO_DEFAULT;
+    document.getElementById('msg-novidade').value = mapa.msg_novidade || MSG_NOVIDADE_DEFAULT;
+  }
+
+  async function guardarMensagem(chave, textareaId, msgElId){
+    const texto = document.getElementById(textareaId).value;
+    const msgEl = document.getElementById(msgElId);
+    msgEl.className=''; msgEl.textContent='A guardar...';
+    const ok = await guardarConfiguracao(chave, texto);
+    if(ok){ msgEl.className='msg-ok'; msgEl.textContent='✅ Guardado!'; registrarLog('Mensagem actualizada', chave); }
+    else { msgEl.className='msg-err'; msgEl.textContent='Erro ao guardar.'; }
   }
 
   async function carregarLogoLogin(){

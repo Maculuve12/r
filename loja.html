@@ -806,6 +806,8 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     flex-direction:column;
     transform:translateX(100%);
     transition:transform .3s ease;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
   }
 
   .cart-overlay.open .cart-drawer{transform:translateX(0);}
@@ -820,6 +822,11 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
     justify-content:space-between;
     padding:20px;
     border-bottom:1px solid var(--border);
+    position:sticky;
+    top:0;
+    background:var(--white);
+    z-index:2;
+    flex-shrink:0;
   }
 
   .cart-header h3{
@@ -838,8 +845,6 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   }
 
   .cart-body{
-    flex:1;
-    overflow-y:auto;
     padding:12px 20px;
   }
 
@@ -2287,7 +2292,7 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
       const itensConta = (data && data.itens) || [];
       itensConta.forEach(itemConta => {
         const existente = carrinho.find(i => i.id===itemConta.id && i.cor===itemConta.cor && i.tamanho===itemConta.tamanho);
-        if(existente) existente.qtd += itemConta.qtd;
+        if(existente) existente.qtd = Math.max(existente.qtd, itemConta.qtd);
         else carrinho.push(itemConta);
       });
       atualizarCarrinhoVisual();
@@ -2602,23 +2607,33 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
       }
     }).catch(()=>{});
 
-    let msg = `Olá Royalty Maculuve! 👋\n\n👤 *DADOS DO CLIENTE*\n• Nome: ${nome}\n• Celular: ${celular}\n• País: ${pais}\n• Província: ${provincia}\n• Distrito: ${distrito}\n• Bairro: ${bairro}\n\n🛍️ *DETALHES DO PEDIDO*\n`;
-    carrinho.forEach((item,i) => {
-      msg += `${i+1}. ${item.nome}\n`;
-      if(item.cor || item.tamanho) msg += `   ${item.cor?`🎨 Cor: ${item.cor} `:''}${item.tamanho?`📏 Tam: ${item.tamanho}`:''}\n`;
-      msg += `   🔢 Qtd: ${item.qtd}x | 💰 Preço: ${item.preco*item.qtd} MT\n\n`;
-    });
+    const itensTexto = carrinho.map((item,i) => {
+      let linha = `${i+1}. ${item.nome}\n`;
+      if(item.cor || item.tamanho) linha += `   ${item.cor?`Cor: ${item.cor} `:''}${item.tamanho?`| Tamanho: ${item.tamanho}`:''}\n`;
+      linha += `   Qtd: ${item.qtd}x | Preço: ${item.preco*item.qtd} MT\n`;
+      return linha;
+    }).join('\n');
 
     const totalPecas = carrinho.reduce((acc,i) => acc+i.qtd, 0);
     const subtotal = carrinho.reduce((acc,i) => acc+(i.preco*i.qtd), 0);
     const desconto = calcularDesconto(subtotal, totalPecas);
     const total = subtotal - desconto;
 
-    msg += `─────────────────────\n💳 *Subtotal:* ${subtotal} MT\n`;
-    if(cupaoAplicado && cupaoInfo && desconto > 0){
-      msg += `🎟 *Cupão (${cupaoInfo.nome}):* -${desconto} MT\n✅ *Total Final:* ${total} MT\n`;
-    } else { msg += `✅ *Total:* ${total} MT\n`; }
-    if(notas) msg += `\n📝 *Observações:* "${notas}"\n`;
+    const descontoLinha = (cupaoAplicado && cupaoInfo && desconto > 0) ? `🎟 Cupão (${cupaoInfo.nome}): -${desconto} MT\n` : '';
+    const notasLinha = notas ? `\nObservações: "${notas}"\n` : '';
+
+    const msg = templatePedidoCache
+      .replaceAll('{{nome}}', nome)
+      .replaceAll('{{celular}}', celular)
+      .replaceAll('{{pais}}', pais)
+      .replaceAll('{{provincia}}', provincia)
+      .replaceAll('{{distrito}}', distrito)
+      .replaceAll('{{bairro}}', bairro)
+      .replaceAll('{{itens}}', itensTexto)
+      .replaceAll('{{subtotal}}', subtotal)
+      .replaceAll('{{desconto_linha}}', descontoLinha)
+      .replaceAll('{{total}}', total)
+      .replaceAll('{{notas_linha}}', notasLinha);
 
     fbq('track', 'Purchase', {
       content_ids:carrinho.map(i => String(i.id)), content_type:'product',
@@ -2640,6 +2655,13 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
         body:JSON.stringify({ total_usos:(cupaoInfo.total_usos||0)+1 })
       }).catch(function(){});
     }
+
+    carrinho = [];
+    cupaoAplicado = false;
+    cupaoInfo = null;
+    formularioVisivel = false;
+    atualizarCarrinhoVisual();
+    toggleCart(false);
   }
 
   // ─── Abas (Todos / Mais Vendidos / Novidades / Promoções) ───
@@ -2771,9 +2793,40 @@ src="https://www.facebook.com/tr?id=2652622554947365&ev=PageView&noscript=1"
   carregarCarrinhoLS();
   atualizarCarrinhoVisual();
   carregarProdutosLoja();
+  const MSG_PEDIDO_DEFAULT = `Olá Royalty Maculuve,
+
+Gostaria de confirmar o seguinte pedido.
+
+DADOS DO CLIENTE
+Nome: {{nome}}
+Celular: {{celular}}
+País: {{pais}}
+Província: {{provincia}}
+Distrito: {{distrito}}
+Bairro: {{bairro}}
+
+DETALHES DO PEDIDO
+{{itens}}
+─────────────────────
+Subtotal: {{subtotal}} MT
+{{desconto_linha}}Total: {{total}} MT
+{{notas_linha}}`;
+
+  let templatePedidoCache = MSG_PEDIDO_DEFAULT;
+  async function carregarTemplatePedido(){
+    try{
+      const r = await fetch(`${SB_URL}/rest/v1/configuracoes?chave=eq.msg_pedido&select=valor`, {
+        headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+      });
+      const data = await r.json();
+      if(data && data[0] && data[0].valor) templatePedidoCache = data[0].valor;
+    }catch(e){}
+  }
+
   carregarBanners();
   verificarSessaoCliente();
   carregarLogoLogin();
+  carregarTemplatePedido();
   verificarLinkAvaliacao();
   verificarLinkProduto();
   verificarFiltroCategoria();
