@@ -136,7 +136,7 @@
     .banner-ordem{font-size:0.76rem;color:var(--muted);font-weight:600;}
     .banner-link{font-size:0.72rem;color:var(--g3);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;}
     .banner-acoes{display:flex;gap:6px;flex-shrink:0;}
-    @media(max-width:600px){.conteudo{padding:14px;}.form-grid{grid-template-columns:1fr;}.graficos-grid{grid-template-columns:1fr;}.produto-card{flex-wrap:wrap;}.produto-acoes{flex-direction:row;flex-wrap:wrap;}.banner-card{flex-wrap:wrap;}.banner-acoes{flex-wrap:wrap;}}
+    @media(max-width:600px){.conteudo{padding:14px;}.form-grid{grid-template-columns:1fr;}.graficos-grid{grid-template-columns:1fr;}.produto-card{flex-wrap:wrap;}.produto-acoes{flex-direction:row;flex-wrap:wrap;display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;}.produto-acoes button{width:100%;}.banner-card{flex-wrap:wrap;}.banner-acoes{flex-wrap:wrap;}}
   </style>
 </head>
 <body>
@@ -164,19 +164,24 @@
 
   <div class="tabs">
     <div class="tab active" onclick="mudarTab('dashboard',this)">📊 Dashboard</div>
+    <div class="tab" onclick="mudarTab('actividade',this)">📜 Actividade</div>
+    <div class="tab" onclick="mudarTab('administradores',this)">🔑 Administradores</div>
+    <div class="tab" onclick="mudarTab('avaliacoes',this)">⭐ Avaliações</div>
+    <div class="tab" onclick="mudarTab('banners',this)">🖼️ Banners</div>
+    <div class="tab" onclick="mudarTab('caixa',this)">💰 Caixa</div>
+    <div class="tab" onclick="mudarTab('categorias',this)">🗂️ Categorias</div>
+    <div class="tab" onclick="mudarTab('clientes',this)">👥 Clientes</div>
+    <div class="tab" onclick="mudarTab('colecoes',this)">🗂️ Coleções</div>
+    <div class="tab" onclick="mudarTab('contactos',this)">📞 Contactos</div>
+    <div class="tab" onclick="mudarTab('cupoes',this)">🎟️ Cupões</div>
+    <div class="tab" onclick="mudarTab('galeria',this)">📸 Galeria</div>
+    <div class="tab" onclick="mudarTab('loginloja',this)">🔐 Login da Loja</div>
+    <div class="tab" onclick="mudarTab('mensagens',this)">✉️ Mensagens</div>
+    <div class="tab" onclick="mudarTab('newsletter',this)">📬 Newsletter</div>
     <div class="tab" onclick="mudarTab('pedidos',this)">📦 Pedidos</div>
     <div class="tab" onclick="mudarTab('produtos',this)">🛍️ Produtos</div>
-    <div class="tab" onclick="mudarTab('categorias',this)">🗂️ Categorias</div>
-    <div class="tab" onclick="mudarTab('banners',this)">🖼️ Banners</div>
-    <div class="tab" onclick="mudarTab('cupoes',this)">🎟️ Cupões</div>
-    <div class="tab" onclick="mudarTab('clientes',this)">👥 Clientes</div>
-    <div class="tab" onclick="mudarTab('avaliacoes',this)">⭐ Avaliações</div>
-    <div class="tab" onclick="mudarTab('caixa',this)">💰 Caixa</div>
     <div class="tab" onclick="mudarTab('relatorios',this)">📈 Relatórios</div>
-    <div class="tab" onclick="mudarTab('galeria',this)">📸 Galeria</div>
-    <div class="tab" onclick="mudarTab('colecoes',this)">🗂️ Coleções</div>
-    <div class="tab" onclick="mudarTab('site',this)">🌐 Site</div>
-    <div class="tab" onclick="mudarTab('actividade',this)">📜 Actividade</div>
+    <div class="tab" onclick="mudarTab('sobrenos',this)">📖 Sobre Nós</div>
   </div>
 
   <div class="conteudo">
@@ -202,16 +207,18 @@
     <!-- PEDIDOS -->
     <div class="tab-content" id="tab-pedidos">
       <div class="filtros">
-        <input class="filtro-input" id="f-data-ini" type="date">
-        <input class="filtro-input" id="f-data-fim" type="date">
-        <input class="filtro-input" id="f-cliente" placeholder="Nome ou telefone">
-        <select class="filtro-input" id="f-estado">
-          <option value="">Todos os estados</option>
-          <option value="Pendente">Pendente</option>
-          <option value="Enviado">Enviado</option>
-          <option value="Entregue">Entregue</option>
-        </select>
-        <button class="btn-filtrar" onclick="carregarPedidos()">Filtrar</button>
+        <div class="form-grupo"><label class="form-label">Data início</label><input class="filtro-input" id="f-data-ini" type="date"></div>
+        <div class="form-grupo"><label class="form-label">Data fim</label><input class="filtro-input" id="f-data-fim" type="date"></div>
+        <div class="form-grupo"><label class="form-label">Nome ou telefone</label><input class="filtro-input" id="f-cliente" placeholder="Nome ou telefone"></div>
+        <div class="form-grupo"><label class="form-label">Estado</label>
+          <select class="filtro-input" id="f-estado">
+            <option value="">Todos os estados</option>
+            <option value="Pendente">Pendente</option>
+            <option value="Enviado">Enviado</option>
+            <option value="Entregue">Entregue</option>
+          </select>
+        </div>
+        <button class="btn-filtrar" onclick="carregarPedidos()" style="align-self:flex-end;">Filtrar</button>
       </div>
       <div class="wrap-tabela"><div id="pedidos-conteudo"><div class="loading">A carregar...</div></div></div>
     </div>
@@ -243,8 +250,9 @@
           <div class="form-grupo full"><label class="form-label">Cores (uma por linha: Nome|#hex)</label><textarea class="form-input" id="fp-cores" rows="4" placeholder="Verde Escuro|#1e3322&#10;Branca|#ffffff"></textarea></div>
           <div class="form-grupo"><label class="form-label">Tamanhos (vírgula)</label><input class="form-input" id="fp-tamanhos" placeholder="M,L,XL"></div>
           <div class="form-grupo"><label class="form-label">Ordem</label><input class="form-input" id="fp-ordem" type="number" placeholder="1"></div>
-          <div class="form-grupo full"><label class="form-label">Links das Imagens (um por linha)</label><textarea class="form-input" id="fp-imgs" rows="4" placeholder="https://..."></textarea>
-            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaTextarea(this,'fp-imgs','fp-imgs-status')"></label><span class="upload-status" id="fp-imgs-status"></span></div>
+          <div class="form-grupo full"><label class="form-label">Links das Imagens (um por linha) — 1000×1000px (quadrado) recomendado</label><textarea class="form-input" id="fp-imgs" rows="4" placeholder="https://..." oninput="atualizarPreviewMultipla(this.value,'fp-preview-wrap')"></textarea>
+            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaTextarea(this,'fp-imgs','fp-imgs-status');atualizarPreviewMultipla(document.getElementById('fp-imgs').value,'fp-preview-wrap');"></label><span class="upload-status" id="fp-imgs-status"></span></div>
+            <div id="fp-preview-wrap" style="display:none;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
           </div>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;margin-bottom:10px;">
@@ -273,8 +281,9 @@
         <div class="form-grid">
           <div class="form-grupo"><label class="form-label">Nome *</label><input class="form-input" id="fcat-nome" placeholder="Ex: Homem"></div>
           <div class="form-grupo"><label class="form-label">Ordem</label><input class="form-input" id="fcat-ordem" type="number" placeholder="1"></div>
-          <div class="form-grupo full"><label class="form-label">Link da Imagem (círculo)</label><input class="form-input" id="fcat-img" placeholder="https://...">
-            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fcat-img','fcat-img-status')"></label><span class="upload-status" id="fcat-img-status"></span></div>
+          <div class="form-grupo full"><label class="form-label">Link da Imagem (círculo) — 400×400px (quadrado) recomendado</label><input class="form-input" id="fcat-img" placeholder="https://..." oninput="atualizarPreviewSimples(this.value,'fcat-preview')">
+            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fcat-img','fcat-img-status');atualizarPreviewSimples(document.getElementById('fcat-img').value,'fcat-preview');"></label><span class="upload-status" id="fcat-img-status"></span></div>
+            <div id="fcat-preview-wrap" style="display:none;margin-top:8px;"><img id="fcat-preview" src="" alt="Pré-visualização" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:1px solid #ddd;display:block;" onerror="this.parentElement.style.display='none'"></div>
           </div>
         </div>
         <div class="form-acoes">
@@ -304,8 +313,9 @@
       <div class="form-card" id="form-banner" style="display:none;">
         <div class="form-titulo" id="form-ban-titulo">🖼️ Adicionar Banner</div>
         <div class="form-grid">
-          <div class="form-grupo full"><label class="form-label">Link da Imagem * (1296×544px recomendado)</label><input class="form-input" id="fb-url" placeholder="https://i.ibb.co/...">
-            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fb-url','fb-url-status')"></label><span class="upload-status" id="fb-url-status"></span></div>
+          <div class="form-grupo full"><label class="form-label">Link da Imagem * (1296×544px recomendado)</label><input class="form-input" id="fb-url" placeholder="https://i.ibb.co/..." oninput="atualizarPreviewSimples(this.value,'fb-preview')">
+            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fb-url','fb-url-status');atualizarPreviewSimples(document.getElementById('fb-url').value,'fb-preview');"></label><span class="upload-status" id="fb-url-status"></span></div>
+            <div id="fb-preview-wrap" style="display:none;margin-top:8px;"><img id="fb-preview" src="" alt="Pré-visualização" style="width:100%;max-width:280px;aspect-ratio:1296/544;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:block;" onerror="this.parentElement.style.display='none'"></div>
           </div>
           <div class="form-grupo full"><label class="form-label">Link de Destino (opcional)</label><input class="form-input" id="fb-link" placeholder="https://... (ao clicar no banner vai para este link)"></div>
           <div class="form-grupo"><label class="form-label">Ordem</label><input class="form-input" id="fb-ordem" type="number" placeholder="1"></div>
@@ -454,8 +464,9 @@
       <div class="form-card">
         <div class="form-titulo">🖼️ Foto de Perfil (aparece em cada publicação na loja)</div>
         <div class="form-grid">
-          <div class="form-grupo full"><label class="form-label">Link da Foto</label><input class="form-input" id="cfg-logo-url" placeholder="https://i.ibb.co/...">
-            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'cfg-logo-url','cfg-logo-url-status')"></label><span class="upload-status" id="cfg-logo-url-status"></span></div>
+          <div class="form-grupo full"><label class="form-label">Link da Foto — 400×400px (quadrado, aparece em círculo)</label><input class="form-input" id="cfg-logo-url" placeholder="https://i.ibb.co/..." oninput="atualizarPreviewSimples(this.value,'cfglogo-preview')">
+            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'cfg-logo-url','cfg-logo-url-status');atualizarPreviewSimples(document.getElementById('cfg-logo-url').value,'cfglogo-preview');"></label><span class="upload-status" id="cfg-logo-url-status"></span></div>
+            <div id="cfglogo-preview-wrap" style="display:none;margin-top:8px;"><img id="cfglogo-preview" src="" alt="Pré-visualização" style="width:64px;height:64px;object-fit:cover;border-radius:50%;border:1px solid #ddd;display:block;" onerror="this.parentElement.style.display='none'"></div>
           </div>
         </div>
         <div class="form-acoes">
@@ -466,13 +477,10 @@
       <div class="form-card" id="form-galeria" style="display:none;">
         <div class="form-titulo" id="form-gal-titulo">📸 Adicionar Publicação</div>
         <div class="form-grid">
-          <div class="form-grupo full"><label class="form-label">Links das Imagens (um por linha) *</label><textarea class="form-input" id="fg-imgs" rows="4" placeholder="https://i.ibb.co/...&#10;https://i.ibb.co/..." oninput="atualizarPreviewGaleria()"></textarea>
+          <div class="form-grupo full"><label class="form-label">Links das Imagens (um por linha) * — 1080×1080px (quadrado, estilo Instagram) recomendado</label><textarea class="form-input" id="fg-imgs" rows="4" placeholder="https://i.ibb.co/...&#10;https://i.ibb.co/..." oninput="atualizarPreviewGaleria()"></textarea>
             <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaTextarea(this,'fg-imgs','fg-imgs-status');atualizarPreviewGaleria();"></label><span class="upload-status" id="fg-imgs-status"></span></div>
           </div>
-          <div class="form-grupo full" id="fg-preview-wrap" style="display:none;">
-            <label class="form-label">Pré-visualização (1ª imagem)</label>
-            <img id="fg-preview" src="" alt="Pré-visualização" style="max-width:180px;max-height:180px;border-radius:8px;border:1px solid #ddd;display:block;object-fit:cover;" onerror="this.style.display='none'" onload="this.style.display='block'">
-          </div>
+          <div class="form-grupo full" id="fg-preview-wrap" style="display:none;flex-wrap:wrap;gap:8px;"></div>
           <div class="form-grupo full"><label class="form-label">Descrição</label><textarea class="form-input" id="fg-desc" rows="3" placeholder="Legenda da publicação..."></textarea></div>
         </div>
         <div class="form-acoes">
@@ -491,15 +499,71 @@
 
     <!-- COLEÇÕES -->
     <div class="tab-content" id="tab-colecoes">
-      <div class="sec-titulo">🏆 Coleções Mais Marcantes</div>
+      <div class="sec-titulo">🗂️ Coleções de Produtos (páginas de lançamento)</div>
+      <div style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;">Cada coleção pode ter várias "peças" — cada uma com introdução, várias imagens, descrição livre e um produto real ligado ao botão de compra.</div>
+      <div class="form-card" id="form-colprod" style="display:none;">
+        <div class="form-titulo" id="form-colprod-titulo">➕ Adicionar Coleção</div>
+        <div class="form-grid">
+          <div class="form-grupo"><label class="form-label">Nome *</label><input class="form-input" id="fcp-nome" placeholder="Ex: Verão 2026"></div>
+          <div class="form-grupo"><label class="form-label">Ordem</label><input class="form-input" id="fcp-ordem" type="number" placeholder="1"></div>
+          <div class="form-grupo full"><label class="form-label">Introdução da Coleção *</label><textarea class="form-input" id="fcp-desc" rows="3" placeholder="Motivo, inspiração, história desta coleção..."></textarea></div>
+          <div class="form-grupo full"><label class="form-label">Imagem de Capa — 1080×1080px (quadrado) recomendado</label><input class="form-input" id="fcp-img" placeholder="https://..." oninput="atualizarPreviewSimples(this.value,'fcp-preview')">
+            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fcp-img','fcp-img-status');atualizarPreviewSimples(document.getElementById('fcp-img').value,'fcp-preview');"></label><span class="upload-status" id="fcp-img-status"></span></div>
+            <div id="fcp-preview-wrap" style="display:none;margin-top:8px;"><img id="fcp-preview" src="" alt="Pré-visualização" style="width:110px;height:110px;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:block;" onerror="this.parentElement.style.display='none'"></div>
+          </div>
+        </div>
+        <div class="form-acoes">
+          <button class="btn-guardar" onclick="guardarColecaoProdutos()">Guardar</button>
+          <button class="btn-cancelar" onclick="fecharFormColecaoProdutos()">Cancelar</button>
+        </div>
+        <div class="form-msg" id="fcp-msg"></div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <button class="btn-topo cinza" style="background:var(--gold);color:var(--g1);border:none;" onclick="abrirFormColecaoProdutos()">+ Adicionar Coleção</button>
+      </div>
+      <div class="produtos-lista" id="colprod-lista"><div class="loading">A carregar...</div></div>
+
+      <!-- Gestão das Peças de uma coleção -->
+      <div id="colprod-pecas-box" style="display:none;margin-top:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div class="sec-titulo" style="margin:0;border:none;padding:0;" id="colprod-pecas-titulo">Peças</div>
+          <button class="btn-sm cinza" onclick="fecharPecasColecao()">✕ Fechar</button>
+        </div>
+
+        <div class="form-card" id="form-peca" style="display:none;">
+          <div class="form-titulo" id="form-peca-titulo">➕ Adicionar Peça</div>
+          <div class="form-grid">
+            <div class="form-grupo full"><label class="form-label">Introdução da Peça (motivo/inspiração)</label><textarea class="form-input" id="fpc-intro" rows="2" placeholder="Porque foi criada esta peça..."></textarea></div>
+            <div class="form-grupo full"><label class="form-label">Links das Imagens (um por linha) — 1000×1000px (quadrado) recomendado</label><textarea class="form-input" id="fpc-imgs" rows="3" placeholder="https://..." oninput="atualizarPreviewMultipla(this.value,'fpc-preview-wrap')"></textarea>
+              <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaTextarea(this,'fpc-imgs','fpc-imgs-status');atualizarPreviewMultipla(document.getElementById('fpc-imgs').value,'fpc-preview-wrap');"></label><span class="upload-status" id="fpc-imgs-status"></span></div>
+              <div id="fpc-preview-wrap" style="display:none;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
+            </div>
+            <div class="form-grupo full"><label class="form-label">Descrição da Peça (cores, tamanhos, quantidades, etc.)</label><textarea class="form-input" id="fpc-desc" rows="3" placeholder="Texto livre..."></textarea></div>
+            <div class="form-grupo"><label class="form-label">Produto ligado ao botão de compra *</label><select class="form-input" id="fpc-produto"><option value="">Escolhe um produto...</option></select></div>
+            <div class="form-grupo"><label class="form-label">Ordem</label><input class="form-input" id="fpc-ordem" type="number" placeholder="1"></div>
+          </div>
+          <div class="form-acoes">
+            <button class="btn-guardar" onclick="guardarPeca()">Guardar</button>
+            <button class="btn-cancelar" onclick="fecharFormPeca()">Cancelar</button>
+          </div>
+          <div class="form-msg" id="fpc-msg"></div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <button class="btn-topo cinza" style="background:var(--gold);color:var(--g1);border:none;" onclick="abrirFormPeca()">+ Adicionar Peça</button>
+        </div>
+        <div class="produtos-lista" id="pecas-lista"></div>
+      </div>
+
+      <div class="sec-titulo" style="margin-top:32px;">🏆 Coleções Mais Marcantes</div>
       <div class="form-card" id="form-marcante" style="display:none;">
         <div class="form-titulo" id="form-marcante-titulo">➕ Adicionar Coleção</div>
         <div class="form-grid">
           <div class="form-grupo"><label class="form-label">Nome *</label><input class="form-input" id="fm-nome" placeholder="Ex: Royalty Black"></div>
           <div class="form-grupo"><label class="form-label">Ordem</label><input class="form-input" id="fm-ordem" type="number" placeholder="1"></div>
           <div class="form-grupo full"><label class="form-label">Descrição *</label><textarea class="form-input" id="fm-desc" rows="2" placeholder="Ex: Uma coleção construída em torno do preto."></textarea></div>
-          <div class="form-grupo full"><label class="form-label">Link da Imagem</label><input class="form-input" id="fm-img" placeholder="https://...">
-            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fm-img','fm-img-status')"></label><span class="upload-status" id="fm-img-status"></span></div>
+          <div class="form-grupo full"><label class="form-label">Link da Imagem — 900×1200px (proporção 3:4) recomendado</label><input class="form-input" id="fm-img" placeholder="https://..." oninput="atualizarPreviewSimples(this.value,'fm-preview')">
+            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fm-img','fm-img-status');atualizarPreviewSimples(document.getElementById('fm-img').value,'fm-preview');"></label><span class="upload-status" id="fm-img-status"></span></div>
+            <div id="fm-preview-wrap" style="display:none;margin-top:8px;"><img id="fm-preview" src="" alt="Pré-visualização" style="width:105px;aspect-ratio:3/4;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:block;" onerror="this.parentElement.style.display='none'"></div>
           </div>
         </div>
         <div class="form-acoes">
@@ -520,8 +584,9 @@
           <div class="form-grupo"><label class="form-label">Nome *</label><input class="form-input" id="fn-nome" placeholder="Ex: Royalty Street 26"></div>
           <div class="form-grupo"><label class="form-label">Ordem</label><input class="form-input" id="fn-ordem" type="number" placeholder="1"></div>
           <div class="form-grupo full"><label class="form-label">Descrição *</label><textarea class="form-input" id="fn-desc" rows="2" placeholder="Ex: Uma nova expressão da marca."></textarea></div>
-          <div class="form-grupo full"><label class="form-label">Link da Imagem</label><input class="form-input" id="fn-img" placeholder="https://...">
-            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fn-img','fn-img-status')"></label><span class="upload-status" id="fn-img-status"></span></div>
+          <div class="form-grupo full"><label class="form-label">Link da Imagem — 900×1200px (proporção 3:4) recomendado</label><input class="form-input" id="fn-img" placeholder="https://..." oninput="atualizarPreviewSimples(this.value,'fn-preview')">
+            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fn-img','fn-img-status');atualizarPreviewSimples(document.getElementById('fn-img').value,'fn-preview');"></label><span class="upload-status" id="fn-img-status"></span></div>
+            <div id="fn-preview-wrap" style="display:none;margin-top:8px;"><img id="fn-preview" src="" alt="Pré-visualização" style="width:105px;aspect-ratio:3/4;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:block;" onerror="this.parentElement.style.display='none'"></div>
           </div>
         </div>
         <div class="form-acoes">
@@ -542,8 +607,9 @@
           <div class="form-grupo"><label class="form-label">Nome do Lançamento</label><input class="form-input" id="fl-nome" placeholder="Ex: Royalty Winter 26"></div>
           <div class="form-grupo"><label class="form-label">Data Prevista</label><input class="form-input" id="fl-data" type="date"></div>
           <div class="form-grupo full"><label class="form-label">Texto</label><textarea class="form-input" id="fl-texto" rows="2" placeholder="Ex: Uma nova colecção está a chegar."></textarea></div>
-          <div class="form-grupo full"><label class="form-label">Link da Imagem Teaser</label><input class="form-input" id="fl-img" placeholder="https://...">
-            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fl-img','fl-img-status')"></label><span class="upload-status" id="fl-img-status"></span></div>
+          <div class="form-grupo full"><label class="form-label">Link da Imagem Teaser — 800×1000px (proporção 4:5) recomendado</label><input class="form-input" id="fl-img" placeholder="https://..." oninput="atualizarPreviewSimples(this.value,'fl-preview')">
+            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fl-img','fl-img-status');atualizarPreviewSimples(document.getElementById('fl-img').value,'fl-preview');"></label><span class="upload-status" id="fl-img-status"></span></div>
+            <div id="fl-preview-wrap" style="display:none;margin-top:8px;"><img id="fl-preview" src="" alt="Pré-visualização" style="width:100px;aspect-ratio:4/5;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:block;" onerror="this.parentElement.style.display='none'"></div>
           </div>
         </div>
         <div class="form-acoes">
@@ -559,8 +625,9 @@
       <div class="form-card" id="form-banner-col" style="display:none;">
         <div class="form-titulo" id="form-ban-col-titulo">🖼️ Adicionar Banner</div>
         <div class="form-grid">
-          <div class="form-grupo full"><label class="form-label">Link da Imagem * (1296×544px recomendado)</label><input class="form-input" id="fbc-url" placeholder="https://i.ibb.co/...">
-            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fbc-url','fbc-url-status')"></label><span class="upload-status" id="fbc-url-status"></span></div>
+          <div class="form-grupo full"><label class="form-label">Link da Imagem * — 1080×1080px (quadrado) recomendado</label><input class="form-input" id="fbc-url" placeholder="https://i.ibb.co/..." oninput="atualizarPreviewSimples(this.value,'fbc-preview')">
+            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'fbc-url','fbc-url-status');atualizarPreviewSimples(document.getElementById('fbc-url').value,'fbc-preview');"></label><span class="upload-status" id="fbc-url-status"></span></div>
+            <div id="fbc-preview-wrap" style="display:none;margin-top:8px;"><img id="fbc-preview" src="" alt="Pré-visualização" style="width:140px;height:140px;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:block;" onerror="this.parentElement.style.display='none'"></div>
           </div>
           <div class="form-grupo full"><label class="form-label">Link de Destino (opcional)</label><input class="form-input" id="fbc-link" placeholder="https://... (ao clicar no banner vai para este link)"></div>
           <div class="form-grupo"><label class="form-label">Ordem</label><input class="form-input" id="fbc-ordem" type="number" placeholder="1"></div>
@@ -575,12 +642,12 @@
         <div class="sec-titulo" style="margin:0;border:none;padding:0;">🖼️ Banners (só nesta página)</div>
         <button class="btn-topo cinza" style="background:var(--gold);color:var(--g1);border:none;" onclick="abrirFormBannerColecoes()">+ Adicionar</button>
       </div>
-      <div style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;">Estes banners aparecem só na página Coleções (independentes dos banners da Loja). Dimensão recomendada: <strong>1296×544px</strong>.</div>
+      <div style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;">Estes banners aparecem só na página Coleções (independentes dos banners da Loja). Dimensão recomendada: <strong>1080×1080px (quadrado)</strong>.</div>
       <div class="banners-lista" id="banners-col-lista"><div class="loading">A carregar...</div></div>
     </div>
 
     <!-- SITE -->
-    <div class="tab-content" id="tab-site">
+    <div class="tab-content" id="tab-mensagens">
       <div class="sec-titulo">✉️ Mensagens (WhatsApp)</div>
       <div style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;">Usa os marcadores entre chavetas duplas — são substituídos automaticamente pelos dados reais ao enviar.</div>
 
@@ -607,8 +674,10 @@
         <div class="form-acoes"><button class="btn-guardar" onclick="guardarMensagem('msg_novidade','msg-novidade','msg-novidade-msg')">Guardar</button></div>
         <div class="form-msg" id="msg-novidade-msg"></div>
       </div>
+    </div>
 
-      <div class="sec-titulo" style="margin-top:32px;">🔑 Administradores</div>
+    <div class="tab-content" id="tab-administradores">
+      <div class="sec-titulo">🔑 Administradores</div>
       <div class="form-card">
         <div class="form-grid">
           <div class="form-grupo full"><label class="form-label">Email da conta a tornar admin (a conta já tem de existir)</label><input class="form-input" id="novo-admin-email" placeholder="alguem@exemplo.com"></div>
@@ -617,33 +686,54 @@
         <div class="form-msg" id="admins-msg"></div>
         <div id="admins-lista" style="margin-top:14px;"><div class="loading">A carregar...</div></div>
       </div>
+    </div>
 
-      <div class="sec-titulo" style="margin-top:32px;">🔐 Login da Loja</div>
+    <div class="tab-content" id="tab-loginloja">
+      <div class="sec-titulo">🔐 Login da Loja</div>
       <div class="form-card">
         <div class="form-grid">
-          <div class="form-grupo full"><label class="form-label">Imagem/Logo do círculo (aparece no painel de login/registo da loja)</label><input class="form-input" id="cfg-logo-login" placeholder="https://i.ibb.co/...">
-            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'cfg-logo-login','cfg-logo-login-status')"></label><span class="upload-status" id="cfg-logo-login-status"></span></div>
+          <div class="form-grupo full"><label class="form-label">Imagem/Logo do círculo (aparece no painel de login/registo da loja) — 400×400px (quadrado) recomendado</label><input class="form-input" id="cfg-logo-login" placeholder="https://i.ibb.co/..." oninput="atualizarPreviewSimples(this.value,'cfglogin-preview')">
+            <div class="upload-linha"><label class="btn-sm cinza" style="cursor:pointer;">📤 Enviar imagem<input type="file" accept="image/*" style="display:none;" onchange="uploadParaInput(this,'cfg-logo-login','cfg-logo-login-status');atualizarPreviewSimples(document.getElementById('cfg-logo-login').value,'cfglogin-preview');"></label><span class="upload-status" id="cfg-logo-login-status"></span></div>
+            <div id="cfglogin-preview-wrap" style="display:none;margin-top:8px;"><img id="cfglogin-preview" src="" alt="Pré-visualização" style="width:64px;height:64px;object-fit:cover;border-radius:50%;border:1px solid #ddd;display:block;" onerror="this.parentElement.style.display='none'"></div>
           </div>
         </div>
         <div class="form-acoes"><button class="btn-guardar" onclick="guardarLogoLogin()">Guardar</button></div>
         <div class="form-msg" id="cfg-logo-login-msg"></div>
       </div>
+    </div>
 
-      <div class="sec-titulo" style="margin-top:32px;">📖 Texto "Sobre Nós"</div>
-      <div class="form-card">
+    <div class="tab-content" id="tab-sobrenos">
+      <div class="sec-titulo">📖 Texto "Sobre Nós"</div>
+      <div style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;">Cada bloco aparece na página na ordem definida. Em parágrafos, usa <strong>**palavra**</strong> para pôr algo a negrito.</div>
+
+      <div class="form-card" id="form-bloco" style="display:none;">
+        <div class="form-titulo" id="form-bloco-titulo">➕ Adicionar Bloco</div>
         <div class="form-grid">
-          <div class="form-grupo full"><label class="form-label">O Começo (1º parágrafo)</label><textarea class="form-input" id="cfg-sobre-p1" rows="3"></textarea></div>
-          <div class="form-grupo full"><label class="form-label">O Começo (2º parágrafo)</label><textarea class="form-input" id="cfg-sobre-p2" rows="3"></textarea></div>
-          <div class="form-grupo full"><label class="form-label">A Filosofia</label><textarea class="form-input" id="cfg-sobre-p3" rows="3"></textarea></div>
-          <div class="form-grupo full"><label class="form-label">Citação do Fundador</label><textarea class="form-input" id="cfg-sobre-citacao" rows="2"></textarea></div>
-          <div class="form-grupo"><label class="form-label">Nome do Fundador</label><input class="form-input" id="cfg-sobre-autor" placeholder="Odêncio Maculuve"></div>
-          <div class="form-grupo full"><label class="form-label">Parágrafo Final</label><textarea class="form-input" id="cfg-sobre-final" rows="2"></textarea></div>
+          <div class="form-grupo"><label class="form-label">Tipo *</label>
+            <select class="form-input" id="fsb-tipo" onchange="mudarTipoBloco()">
+              <option value="paragrafo">Parágrafo (texto)</option>
+              <option value="citacao">Citação</option>
+            </select>
+          </div>
+          <div class="form-grupo"><label class="form-label">Ordem</label><input class="form-input" id="fsb-ordem" type="number" placeholder="1"></div>
+          <div class="form-grupo full" id="fsb-titulo-grupo"><label class="form-label">Título (aparece como cabeçalho na página)</label><input class="form-input" id="fsb-titulo" placeholder="Ex: O Começo"></div>
+          <div class="form-grupo full"><label class="form-label" id="fsb-texto-label">Texto *</label><textarea class="form-input" id="fsb-texto" rows="4" placeholder="Podes usar **negrito** dentro do texto"></textarea></div>
+          <div class="form-grupo full" id="fsb-autor-grupo" style="display:none;"><label class="form-label">Autor da Citação</label><input class="form-input" id="fsb-autor" placeholder="Odêncio Maculuve"></div>
         </div>
-        <div class="form-acoes"><button class="btn-guardar" onclick="guardarSobreNos()">Guardar</button></div>
-        <div class="form-msg" id="cfg-sobre-msg"></div>
+        <div class="form-acoes">
+          <button class="btn-guardar" onclick="guardarBlocoSobreNos()">Guardar</button>
+          <button class="btn-cancelar" onclick="fecharFormBlocoSobreNos()">Cancelar</button>
+        </div>
+        <div class="form-msg" id="fsb-msg"></div>
       </div>
+      <div style="margin-bottom:14px;">
+        <button class="btn-topo cinza" style="background:var(--gold);color:var(--g1);border:none;" onclick="abrirFormBlocoSobreNos()">+ Adicionar Bloco</button>
+      </div>
+      <div class="produtos-lista" id="sobrenos-blocos-lista"><div class="loading">A carregar...</div></div>
+    </div>
 
-      <div class="sec-titulo" style="margin-top:32px;">📞 Contactos</div>
+    <div class="tab-content" id="tab-contactos">
+      <div class="sec-titulo">📞 Contactos</div>
       <div class="form-card">
         <div class="form-grid">
           <div class="form-grupo"><label class="form-label">WhatsApp (só número)</label><input class="form-input" id="cfg-whatsapp" placeholder="258879573018"></div>
@@ -655,8 +745,10 @@
         <div class="form-acoes"><button class="btn-guardar" onclick="guardarContactos()">Guardar</button></div>
         <div class="form-msg" id="cfg-contactos-msg"></div>
       </div>
+    </div>
 
-      <div class="sec-titulo" style="margin-top:32px;">📬 Inscrições na Newsletter</div>
+    <div class="tab-content" id="tab-newsletter">
+      <div class="sec-titulo">📬 Inscrições na Newsletter</div>
       <div class="wrap-tabela"><div id="newsletter-lista"><div class="loading">A carregar...</div></div></div>
     </div>
 
@@ -794,8 +886,13 @@
     if(tab==='caixa') carregarCaixa();
     if(tab==='relatorios') carregarRelatorios(7);
     if(tab==='galeria'){ carregarGaleriaAdmin(); carregarLogoGaleriaConfig(); }
-    if(tab==='colecoes'){ carregarMarcantes(); carregarNovasColecoes(); carregarLancamento(); carregarBannersColecoes(); }
-    if(tab==='site'){ carregarSobreNos(); carregarContactosConfig(); carregarNewsletter(); carregarLogoLogin(); carregarAdmins(); carregarMensagens(); }
+    if(tab==='colecoes'){ carregarColecoesProdutos(); carregarMarcantes(); carregarNovasColecoes(); carregarLancamento(); carregarBannersColecoes(); }
+    if(tab==='mensagens'){ carregarMensagens(); }
+    if(tab==='administradores'){ carregarAdmins(); }
+    if(tab==='loginloja'){ carregarLogoLogin(); }
+    if(tab==='sobrenos'){ carregarSobreNos(); }
+    if(tab==='contactos'){ carregarContactosConfig(); }
+    if(tab==='newsletter'){ carregarNewsletter(); }
     if(tab==='actividade') carregarActividade();
   }
 
@@ -940,23 +1037,25 @@
     const data=await sbGet('produtos','order=ordem.asc');
     const c=document.getElementById('produtos-lista');
     if(!data.length){c.innerHTML='<div class="vazio">Sem produtos.</div>';return;}
-    c.innerHTML=data.map(p=>`<div class="produto-card ${!p.activo?'inactivo':''}">
-      <img class="produto-img" src="${(p.imagens||[])[0]||''}" alt="${p.nome}" onerror="this.style.display='none'">
-      <div class="produto-info">
-        <div class="produto-nome">${p.nome}${p.badge?` <span class="tag activo">${p.badge}</span>`:''} ${!p.activo?'<span class="tag inactivo">Inactivo</span>':''}</div>
-        <div class="produto-preco">${p.preco_original?`<span style="text-decoration:line-through;color:var(--muted);font-size:0.7rem;">${p.preco_original} MT</span> `:''} ${p.preco} MT</div>
-        <div class="produto-meta">${(p.cores||[]).map(c=>c.nome).join(', ')} | ${(p.tamanhos||[]).join(', ')}</div>
+    c.innerHTML=data.map(p=>`<div class="produto-card ${!p.activo?'inactivo':''}" style="flex-direction:column;align-items:stretch;">
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <img class="produto-img" src="${(p.imagens||[])[0]||''}" alt="${p.nome}" onerror="this.style.display='none'">
+        <div class="produto-info">
+          <div class="produto-nome">${p.nome}${p.badge?` <span class="tag activo">${p.badge}</span>`:''} ${!p.activo?'<span class="tag inactivo">Inactivo</span>':''}</div>
+          <div class="produto-preco">${p.preco_original?`<span style="text-decoration:line-through;color:var(--muted);font-size:0.7rem;">${p.preco_original} MT</span> `:''} ${p.preco} MT</div>
+          <div class="produto-meta">${(p.cores||[]).map(c=>c.nome).join(', ')} | ${(p.tamanhos||[]).join(', ')}</div>
+        </div>
       </div>
-      <div class="produto-acoes">
+      <div class="produto-acoes" style="flex-direction:row;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--off);">
         <button class="btn-sm verde" onclick="editarProduto(${p.id})">✏️ Editar</button>
         ${p.activo?`<button class="btn-sm cinza" onclick="toggleProduto(${p.id},false)">Desactivar</button>`:`<button class="btn-sm activar" onclick="toggleProduto(${p.id},true)">Activar</button>`}
-        <button class="btn-sm gold" onclick="notificarClientes(${JSON.stringify(p).replace(/"/g,'&quot;')})">📢 Notificar</button>
+        <button class="btn-sm cinza" onclick="notificarClientes(${JSON.stringify(p).replace(/"/g,'&quot;')})">📢 Notificar</button>
         <button class="btn-sm vermelho" onclick="eliminarProduto(${p.id},'${p.nome}')">Eliminar</button>
       </div>
     </div>`).join('');
   }
 
-  function abrirFormProduto(){prodEditandoId=null;document.getElementById('form-prod-titulo').textContent='➕ Adicionar Produto';['fp-nome','fp-desc','fp-preco','fp-preco-orig','fp-cores','fp-tamanhos','fp-imgs','fp-ordem'].forEach(id=>document.getElementById(id).value='');document.getElementById('fp-badge').value='';document.getElementById('fp-msg').textContent='';document.getElementById('fp-stock-grid').innerHTML='';carregarCategoriasSelect('');carregarColecoesSelect('');document.getElementById('form-produto').style.display='block';document.getElementById('form-produto').scrollIntoView({behavior:'smooth'});}
+  function abrirFormProduto(){prodEditandoId=null;document.getElementById('form-prod-titulo').textContent='➕ Adicionar Produto';['fp-nome','fp-desc','fp-preco','fp-preco-orig','fp-cores','fp-tamanhos','fp-imgs','fp-ordem'].forEach(id=>document.getElementById(id).value='');document.getElementById('fp-badge').value='';document.getElementById('fp-msg').textContent='';document.getElementById('fp-stock-grid').innerHTML='';atualizarPreviewMultipla('','fp-preview-wrap');carregarCategoriasSelect('');carregarColecoesSelect('');document.getElementById('form-produto').style.display='block';document.getElementById('form-produto').scrollIntoView({behavior:'smooth'});}
 
   // ── Categorias e Coleções (dinâmicas, criadas a partir do form de produto) ──
   async function carregarCategoriasSelect(seleccionado){
@@ -1015,7 +1114,7 @@
     }).join('');
   }
 
-  function abrirFormCategoriaAdm(){categoriaAdmEditandoId=null;document.getElementById('form-categoria-titulo').textContent='➕ Adicionar Categoria';['fcat-nome','fcat-ordem','fcat-img'].forEach(id=>document.getElementById(id).value='');document.getElementById('fcat-msg').textContent='';document.getElementById('form-categoria').style.display='block';document.getElementById('form-categoria').scrollIntoView({behavior:'smooth'});}
+  function abrirFormCategoriaAdm(){categoriaAdmEditandoId=null;document.getElementById('form-categoria-titulo').textContent='➕ Adicionar Categoria';['fcat-nome','fcat-ordem','fcat-img'].forEach(id=>document.getElementById(id).value='');document.getElementById('fcat-msg').textContent='';atualizarPreviewSimples('','fcat-preview');document.getElementById('form-categoria').style.display='block';document.getElementById('form-categoria').scrollIntoView({behavior:'smooth'});}
 
   async function editarCategoriaAdm(id){
     const data=await sbGet('categorias',`id=eq.${id}`);if(!data.length)return;const cat=data[0];categoriaAdmEditandoId=id;
@@ -1023,6 +1122,7 @@
     document.getElementById('fcat-nome').value=cat.nome||'';
     document.getElementById('fcat-ordem').value=cat.ordem||'';
     document.getElementById('fcat-img').value=cat.imagem_url||'';
+    atualizarPreviewSimples(cat.imagem_url||'','fcat-preview');
     document.getElementById('fcat-msg').textContent='';
     document.getElementById('form-categoria').style.display='block';document.getElementById('form-categoria').scrollIntoView({behavior:'smooth'});
   }
@@ -1107,6 +1207,7 @@
     document.getElementById('fp-cores').value=(p.cores||[]).map(c=>`${c.nome}|${c.hex}`).join('\n');
     document.getElementById('fp-tamanhos').value=(p.tamanhos||[]).join(',');
     document.getElementById('fp-imgs').value=(p.imagens||[]).join('\n');
+    atualizarPreviewMultipla((p.imagens||[]).join('\n'),'fp-preview-wrap');
     document.getElementById('fp-ordem').value=p.ordem||'';
     document.getElementById('fp-msg').textContent='';
     const stockRows=await sbGet('stock',`produto_id=eq.${id}`);
@@ -1282,12 +1383,13 @@
     </div>`).join('');
   }
 
-  function abrirFormBanner(){banEditandoId=null;document.getElementById('form-ban-titulo').textContent='🖼️ Adicionar Banner';['fb-url','fb-link','fb-ordem'].forEach(id=>document.getElementById(id).value='');document.getElementById('fb-msg').textContent='';document.getElementById('form-banner').style.display='block';document.getElementById('form-banner').scrollIntoView({behavior:'smooth'});}
+  function abrirFormBanner(){banEditandoId=null;document.getElementById('form-ban-titulo').textContent='🖼️ Adicionar Banner';['fb-url','fb-link','fb-ordem'].forEach(id=>document.getElementById(id).value='');document.getElementById('fb-msg').textContent='';atualizarPreviewSimples('','fb-preview');document.getElementById('form-banner').style.display='block';document.getElementById('form-banner').scrollIntoView({behavior:'smooth'});}
 
   async function editarBanner(id){
     const data=await sbGet('banners',`id=eq.${id}`);if(!data.length)return;const b=data[0];banEditandoId=id;
     document.getElementById('form-ban-titulo').textContent='✏️ Editar Banner';
     document.getElementById('fb-url').value=b.imagem_url||'';document.getElementById('fb-link').value=b.link_destino||'';document.getElementById('fb-ordem').value=b.ordem||'';
+    atualizarPreviewSimples(b.imagem_url||'','fb-preview');
     document.getElementById('fb-msg').textContent='';document.getElementById('form-banner').style.display='block';document.getElementById('form-banner').scrollIntoView({behavior:'smooth'});
   }
 
@@ -1314,7 +1416,7 @@
     const c=document.getElementById('banners-col-lista');
     if(!data.length){c.innerHTML='<div class="vazio">Sem banners. Adiciona o primeiro!</div>';return;}
     c.innerHTML=data.map(b=>`<div class="banner-card ${!b.activo?'inactivo':''}">
-      <img class="banner-prev" src="${b.imagem_url}" alt="Banner" onerror="this.style.display='none'">
+      <img class="banner-prev" style="width:70px;height:70px;object-fit:contain;background:var(--off);" src="${b.imagem_url}" alt="Banner" onerror="this.style.display='none'">
       <div class="banner-info">
         <div class="banner-ordem">Ordem: ${b.ordem} &nbsp; <span class="tag ${b.activo?'activo':'inactivo'}">${b.activo?'Activo':'Inactivo'}</span></div>
         ${b.link_destino?`<div class="banner-link">🔗 ${b.link_destino}</div>`:'<div class="banner-link" style="color:var(--muted)">Sem link</div>'}
@@ -1327,12 +1429,13 @@
     </div>`).join('');
   }
 
-  function abrirFormBannerColecoes(){banColEditandoId=null;document.getElementById('form-ban-col-titulo').textContent='🖼️ Adicionar Banner';['fbc-url','fbc-link','fbc-ordem'].forEach(id=>document.getElementById(id).value='');document.getElementById('fbc-msg').textContent='';document.getElementById('form-banner-col').style.display='block';document.getElementById('form-banner-col').scrollIntoView({behavior:'smooth'});}
+  function abrirFormBannerColecoes(){banColEditandoId=null;document.getElementById('form-ban-col-titulo').textContent='🖼️ Adicionar Banner';['fbc-url','fbc-link','fbc-ordem'].forEach(id=>document.getElementById(id).value='');document.getElementById('fbc-msg').textContent='';atualizarPreviewSimples('','fbc-preview');document.getElementById('form-banner-col').style.display='block';document.getElementById('form-banner-col').scrollIntoView({behavior:'smooth'});}
 
   async function editarBannerColecoes(id){
     const data=await sbGet('banners',`id=eq.${id}`);if(!data.length)return;const b=data[0];banColEditandoId=id;
     document.getElementById('form-ban-col-titulo').textContent='✏️ Editar Banner';
     document.getElementById('fbc-url').value=b.imagem_url||'';document.getElementById('fbc-link').value=b.link_destino||'';document.getElementById('fbc-ordem').value=b.ordem||'';
+    atualizarPreviewSimples(b.imagem_url||'','fbc-preview');
     document.getElementById('fbc-msg').textContent='';document.getElementById('form-banner-col').style.display='block';document.getElementById('form-banner-col').scrollIntoView({behavior:'smooth'});
   }
 
@@ -1532,6 +1635,7 @@
   async function carregarLogoGaleriaConfig(){
     const data=await sbGet('configuracoes',`chave=eq.logo_galeria`);
     document.getElementById('cfg-logo-url').value=(data[0]&&data[0].valor)||'';
+    atualizarPreviewSimples((data[0]&&data[0].valor)||'','cfglogo-preview');
   }
 
   async function guardarLogoGaleria(){
@@ -1580,11 +1684,26 @@
 
   function fecharFormGaleria(){document.getElementById('form-galeria').style.display='none';galEditandoId=null;}
 
+  function atualizarPreviewMultipla(valor, wrapId){
+    const wrap=document.getElementById(wrapId);
+    if(!wrap) return;
+    const linhas=(valor||'').split('\n').map(l=>l.trim()).filter(Boolean);
+    if(!linhas.length){ wrap.innerHTML=''; wrap.style.display='none'; return; }
+    wrap.style.display='flex';
+    wrap.innerHTML=linhas.map(url=>`<img src="${url}" alt="Pré-visualização" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid #ddd;flex-shrink:0;" onerror="this.style.display='none'">`).join('');
+  }
+
+  function atualizarPreviewSimples(valor, previewId){
+    const wrap=document.getElementById(previewId+'-wrap');
+    const img=document.getElementById(previewId);
+    if(!wrap||!img) return;
+    const url=(valor||'').trim();
+    if(url){ img.src=url; wrap.style.display='block'; }
+    else { img.src=''; wrap.style.display='none'; }
+  }
+
   function atualizarPreviewGaleria(){
-    const linhas=document.getElementById('fg-imgs').value.trim();
-    const primeira=linhas?linhas.split('\n').map(l=>l.trim()).filter(Boolean)[0]:null;
-    const wrap=document.getElementById('fg-preview-wrap');const img=document.getElementById('fg-preview');
-    if(primeira){img.src=primeira;wrap.style.display='block';}else{img.src='';wrap.style.display='none';}
+    atualizarPreviewMultipla(document.getElementById('fg-imgs').value,'fg-preview-wrap');
   }
 
   async function guardarGaleria(){
@@ -1606,6 +1725,169 @@
   // ── Coleções Mais Marcantes ──
   let marcanteEditandoId=null;
 
+  // ── Coleções de Produtos (com peças) ──
+  let colProdEditandoId=null;
+  let pecaEditandoId=null;
+  let colecaoAbertaId=null;
+
+  async function carregarColecoesProdutos(){
+    document.getElementById('colprod-pecas-box').style.display='none';
+    const [cols, pecas] = await Promise.all([sbGet('colecoes','order=ordem.asc'), sbGet('colecoes_pecas','select=id,colecao_id')]);
+    const cont={};
+    pecas.forEach(p=>{ cont[p.colecao_id]=(cont[p.colecao_id]||0)+1; });
+    const c=document.getElementById('colprod-lista');
+    if(!cols.length){c.innerHTML='<div class="vazio">Sem coleções. Adiciona a primeira!</div>';return;}
+    c.innerHTML=cols.map(col=>{
+      const n=cont[col.id]||0;
+      return `<div class="produto-card">
+        <img class="produto-img" style="border-radius:8px;object-fit:cover;width:60px;height:60px;" src="${col.imagem_capa||''}" alt="${col.nome}" onerror="this.style.display='none'">
+        <div class="produto-info">
+          <div class="produto-nome">${col.nome}</div>
+          <div class="produto-meta">${n} peça${n===1?'':'s'} &nbsp;·&nbsp; Ordem: ${col.ordem||''}</div>
+        </div>
+        <div class="produto-acoes">
+          <button class="btn-sm cinza" onclick="verPecasColecao(${col.id},'${col.nome}')">🧩 Peças</button>
+          <button class="btn-sm verde" onclick="editarColecaoProdutos(${col.id})">✏️ Editar</button>
+          <button class="btn-sm vermelho" onclick="eliminarColecaoProdutos(${col.id},'${col.nome}',${n})">Eliminar</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function abrirFormColecaoProdutos(){colProdEditandoId=null;document.getElementById('form-colprod-titulo').textContent='➕ Adicionar Coleção';['fcp-nome','fcp-ordem','fcp-desc','fcp-img'].forEach(id=>document.getElementById(id).value='');atualizarPreviewSimples('','fcp-preview');document.getElementById('fcp-msg').textContent='';document.getElementById('form-colprod').style.display='block';document.getElementById('form-colprod').scrollIntoView({behavior:'smooth'});}
+
+  async function editarColecaoProdutos(id){
+    const data=await sbGet('colecoes',`id=eq.${id}`);if(!data.length)return;const col=data[0];colProdEditandoId=id;
+    document.getElementById('form-colprod-titulo').textContent='✏️ Editar Coleção';
+    document.getElementById('fcp-nome').value=col.nome||'';
+    document.getElementById('fcp-ordem').value=col.ordem||'';
+    document.getElementById('fcp-desc').value=col.descricao||'';
+    document.getElementById('fcp-img').value=col.imagem_capa||'';
+    atualizarPreviewSimples(col.imagem_capa||'','fcp-preview');
+    document.getElementById('fcp-msg').textContent='';
+    document.getElementById('form-colprod').style.display='block';document.getElementById('form-colprod').scrollIntoView({behavior:'smooth'});
+  }
+
+  function fecharFormColecaoProdutos(){document.getElementById('form-colprod').style.display='none';colProdEditandoId=null;}
+
+  async function guardarColecaoProdutos(){
+    const nome=document.getElementById('fcp-nome').value.trim();
+    const ordem=parseInt(document.getElementById('fcp-ordem').value)||99;
+    const descricao=document.getElementById('fcp-desc').value.trim();
+    const imagem_capa=document.getElementById('fcp-img').value.trim();
+    const msgEl=document.getElementById('fcp-msg');
+    if(!nome||!descricao){msgEl.className='msg-err';msgEl.textContent='Nome e introdução são obrigatórios.';return;}
+    msgEl.className='';msgEl.textContent='A guardar...';
+    const dados={nome,ordem,descricao,imagem_capa:imagem_capa||null};
+    let ok;
+    if(colProdEditandoId){ ok=await sbPatch('colecoes',`id=eq.${colProdEditandoId}`,dados); }
+    else{
+      const existente=await sbGet('colecoes',`nome=eq.${encodeURIComponent(nome)}`);
+      if(existente.length){msgEl.className='msg-err';msgEl.textContent='Já existe uma coleção com esse nome.';return;}
+      ok=await sbPost('colecoes',dados);
+    }
+    if(ok){msgEl.className='msg-ok';msgEl.textContent='✅ Guardado!';registrarLog(colProdEditandoId?'Editar coleção':'Criar coleção',nome);setTimeout(()=>{fecharFormColecaoProdutos();carregarColecoesProdutos();},900);}
+    else{msgEl.className='msg-err';msgEl.textContent='Erro ao guardar.';}
+  }
+
+  async function eliminarColecaoProdutos(id,nome,totalPecas){
+    if(totalPecas>0){alert(`Esta coleção tem ${totalPecas} peça(s). Elimina as peças primeiro.`);return;}
+    if(!confirm(`Eliminar a coleção "${nome}"?`))return;
+    await sbDelete('colecoes',`id=eq.${id}`);
+    registrarLog('Eliminar coleção',nome);
+    carregarColecoesProdutos();
+  }
+
+  async function verPecasColecao(id,nome){
+    colecaoAbertaId=id;
+    document.getElementById('colprod-pecas-titulo').textContent=`🧩 Peças de "${nome}"`;
+    document.getElementById('colprod-pecas-box').style.display='block';
+    document.getElementById('colprod-pecas-box').scrollIntoView({behavior:'smooth'});
+    await carregarProdutosSelectPeca();
+    await carregarPecas();
+  }
+
+  function fecharPecasColecao(){document.getElementById('colprod-pecas-box').style.display='none';colecaoAbertaId=null;}
+
+  async function carregarProdutosSelectPeca(seleccionado){
+    const data=await sbGet('produtos','order=nome.asc&select=id,nome');
+    const sel=document.getElementById('fpc-produto');
+    sel.innerHTML='<option value="">Escolhe um produto...</option>'+data.map(p=>`<option value="${p.id}">${p.nome}</option>`).join('');
+    if(seleccionado) sel.value=seleccionado;
+  }
+
+  async function carregarPecas(){
+    const data=await sbGet('colecoes_pecas',`colecao_id=eq.${colecaoAbertaId}&order=ordem.asc`);
+    const c=document.getElementById('pecas-lista');
+    if(!data.length){c.innerHTML='<div class="vazio">Sem peças ainda. Adiciona a primeira!</div>';return;}
+    c.innerHTML=data.map(p=>{
+      const primeiraImg=(Array.isArray(p.imagens)&&p.imagens[0])||'';
+      return `<div class="produto-card">
+        <img class="produto-img" src="${primeiraImg}" alt="Peça" onerror="this.style.display='none'">
+        <div class="produto-info">
+          <div class="produto-nome">${(p.intro||'').slice(0,50)||'(sem introdução)'}</div>
+          <div class="produto-meta">${(Array.isArray(p.imagens)?p.imagens.length:0)} imagem(ns) &nbsp;·&nbsp; Ordem: ${p.ordem||''}</div>
+        </div>
+        <div class="produto-acoes">
+          <button class="btn-sm verde" onclick="editarPeca(${p.id})">✏️ Editar</button>
+          <button class="btn-sm vermelho" onclick="eliminarPeca(${p.id})">Eliminar</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function abrirFormPeca(){
+    pecaEditandoId=null;
+    document.getElementById('form-peca-titulo').textContent='➕ Adicionar Peça';
+    ['fpc-intro','fpc-imgs','fpc-desc','fpc-ordem'].forEach(id=>document.getElementById(id).value='');
+    atualizarPreviewMultipla('','fpc-preview-wrap');
+    carregarProdutosSelectPeca('');
+    document.getElementById('fpc-msg').textContent='';
+    document.getElementById('form-peca').style.display='block';document.getElementById('form-peca').scrollIntoView({behavior:'smooth'});
+  }
+
+  async function editarPeca(id){
+    const data=await sbGet('colecoes_pecas',`id=eq.${id}`);if(!data.length)return;const p=data[0];pecaEditandoId=id;
+    document.getElementById('form-peca-titulo').textContent='✏️ Editar Peça';
+    document.getElementById('fpc-intro').value=p.intro||'';
+    document.getElementById('fpc-imgs').value=(Array.isArray(p.imagens)?p.imagens:[]).join('\n');
+    document.getElementById('fpc-desc').value=p.descricao||'';
+    document.getElementById('fpc-ordem').value=p.ordem||'';
+    atualizarPreviewMultipla((Array.isArray(p.imagens)?p.imagens:[]).join('\n'),'fpc-preview-wrap');
+    await carregarProdutosSelectPeca(p.produto_id||'');
+    document.getElementById('fpc-msg').textContent='';
+    document.getElementById('form-peca').style.display='block';document.getElementById('form-peca').scrollIntoView({behavior:'smooth'});
+  }
+
+  function fecharFormPeca(){document.getElementById('form-peca').style.display='none';pecaEditandoId=null;}
+
+  async function guardarPeca(){
+    const intro=document.getElementById('fpc-intro').value.trim();
+    const imgsRaw=document.getElementById('fpc-imgs').value.trim();
+    const imagens=imgsRaw?imgsRaw.split('\n').map(l=>l.trim()).filter(Boolean):[];
+    const descricao=document.getElementById('fpc-desc').value.trim();
+    const produto_id=document.getElementById('fpc-produto').value;
+    const ordem=parseInt(document.getElementById('fpc-ordem').value)||99;
+    const msgEl=document.getElementById('fpc-msg');
+    if(!produto_id){msgEl.className='msg-err';msgEl.textContent='Escolhe o produto ligado ao botão de compra.';return;}
+    if(!imagens.length){msgEl.className='msg-err';msgEl.textContent='Adiciona pelo menos uma imagem.';return;}
+    msgEl.className='';msgEl.textContent='A guardar...';
+    const dados={colecao_id:colecaoAbertaId,produto_id:parseInt(produto_id),intro:intro||null,imagens,descricao:descricao||null,ordem};
+    let ok;
+    if(pecaEditandoId){ ok=await sbPatch('colecoes_pecas',`id=eq.${pecaEditandoId}`,dados); }
+    else{ ok=await sbPost('colecoes_pecas',dados); }
+    if(ok){msgEl.className='msg-ok';msgEl.textContent='✅ Guardado!';registrarLog(pecaEditandoId?'Editar peça':'Criar peça','Coleção #'+colecaoAbertaId);setTimeout(()=>{fecharFormPeca();carregarPecas();carregarColecoesProdutos();},900);}
+    else{msgEl.className='msg-err';msgEl.textContent='Erro ao guardar.';}
+  }
+
+  async function eliminarPeca(id){
+    if(!confirm('Eliminar esta peça?'))return;
+    await sbDelete('colecoes_pecas',`id=eq.${id}`);
+    registrarLog('Eliminar peça','Coleção #'+colecaoAbertaId);
+    carregarPecas();
+    carregarColecoesProdutos();
+  }
+
   async function carregarMarcantes(){
     const data=await sbGet('colecoes_destaque','order=ordem.asc');
     const c=document.getElementById('marcantes-lista');
@@ -1624,13 +1906,14 @@
     </div>`).join('');
   }
 
-  function abrirFormMarcante(){marcanteEditandoId=null;document.getElementById('form-marcante-titulo').textContent='➕ Adicionar Coleção';['fm-nome','fm-desc','fm-img','fm-ordem'].forEach(id=>document.getElementById(id).value='');document.getElementById('fm-msg').textContent='';document.getElementById('form-marcante').style.display='block';document.getElementById('form-marcante').scrollIntoView({behavior:'smooth'});}
+  function abrirFormMarcante(){marcanteEditandoId=null;document.getElementById('form-marcante-titulo').textContent='➕ Adicionar Coleção';['fm-nome','fm-desc','fm-img','fm-ordem'].forEach(id=>document.getElementById(id).value='');document.getElementById('fm-msg').textContent='';atualizarPreviewSimples('','fm-preview');document.getElementById('form-marcante').style.display='block';document.getElementById('form-marcante').scrollIntoView({behavior:'smooth'});}
 
   async function editarMarcante(id){
     const data=await sbGet('colecoes_destaque',`id=eq.${id}`);if(!data.length)return;const m=data[0];marcanteEditandoId=id;
     document.getElementById('form-marcante-titulo').textContent='✏️ Editar Coleção';
     document.getElementById('fm-nome').value=m.nome||'';document.getElementById('fm-desc').value=m.descricao||'';
     document.getElementById('fm-img').value=m.imagem_url||'';document.getElementById('fm-ordem').value=m.ordem||'';
+    atualizarPreviewSimples(m.imagem_url||'','fm-preview');
     document.getElementById('fm-msg').textContent='';
     document.getElementById('form-marcante').style.display='block';document.getElementById('form-marcante').scrollIntoView({behavior:'smooth'});
   }
@@ -1680,13 +1963,14 @@
     </div>`).join('');
   }
 
-  function abrirFormNovaColecao(){novaColecaoEditandoId=null;document.getElementById('form-nova-colecao-titulo').textContent='➕ Adicionar Nova Coleção';['fn-nome','fn-desc','fn-img','fn-ordem'].forEach(id=>document.getElementById(id).value='');document.getElementById('fn-msg').textContent='';document.getElementById('form-nova-colecao').style.display='block';document.getElementById('form-nova-colecao').scrollIntoView({behavior:'smooth'});}
+  function abrirFormNovaColecao(){novaColecaoEditandoId=null;document.getElementById('form-nova-colecao-titulo').textContent='➕ Adicionar Nova Coleção';['fn-nome','fn-desc','fn-img','fn-ordem'].forEach(id=>document.getElementById(id).value='');document.getElementById('fn-msg').textContent='';atualizarPreviewSimples('','fn-preview');document.getElementById('form-nova-colecao').style.display='block';document.getElementById('form-nova-colecao').scrollIntoView({behavior:'smooth'});}
 
   async function editarNovaColecao(id){
     const data=await sbGet('colecoes_novas',`id=eq.${id}`);if(!data.length)return;const m=data[0];novaColecaoEditandoId=id;
     document.getElementById('form-nova-colecao-titulo').textContent='✏️ Editar Coleção';
     document.getElementById('fn-nome').value=m.nome||'';document.getElementById('fn-desc').value=m.descricao||'';
     document.getElementById('fn-img').value=m.imagem_url||'';document.getElementById('fn-ordem').value=m.ordem||'';
+    atualizarPreviewSimples(m.imagem_url||'','fn-preview');
     document.getElementById('fn-msg').textContent='';
     document.getElementById('form-nova-colecao').style.display='block';document.getElementById('form-nova-colecao').scrollIntoView({behavior:'smooth'});
   }
@@ -1723,6 +2007,7 @@
     document.getElementById('fl-data').value=l.data_prevista||'';
     document.getElementById('fl-texto').value=l.texto||'';
     document.getElementById('fl-img').value=l.imagem_url||'';
+    atualizarPreviewSimples(l.imagem_url||'','fl-preview');
     document.getElementById('fl-activo').checked=!!l.activo;
   }
 
@@ -1849,6 +2134,7 @@ ROYALTY — Beyond Trends`;
   async function carregarLogoLogin(){
     const data=await sbGet('configuracoes','chave=eq.logo_login');
     document.getElementById('cfg-logo-login').value=(data[0]&&data[0].valor)||'';
+    atualizarPreviewSimples((data[0]&&data[0].valor)||'','cfglogin-preview');
   }
 
   async function guardarLogoLogin(){
@@ -1860,39 +2146,90 @@ ROYALTY — Beyond Trends`;
     else{msgEl.className='msg-err';msgEl.textContent='Erro ao guardar.';}
   }
 
+  // ── "Sobre Nós" por blocos (parágrafo / citação) ──
+  let blocoSobreNosEditandoId=null;
+
   async function carregarSobreNos(){
-    const chaves=['sobre_p1','sobre_p2','sobre_p3','sobre_citacao','sobre_autor','sobre_final'];
-    const data=await sbGet('configuracoes',`chave=in.(${chaves.join(',')})`);
-    const mapa={}; data.forEach(d=>{mapa[d.chave]=d.valor;});
-    document.getElementById('cfg-sobre-p1').value=mapa.sobre_p1||'';
-    document.getElementById('cfg-sobre-p2').value=mapa.sobre_p2||'';
-    document.getElementById('cfg-sobre-p3').value=mapa.sobre_p3||'';
-    document.getElementById('cfg-sobre-citacao').value=mapa.sobre_citacao||'';
-    document.getElementById('cfg-sobre-autor').value=mapa.sobre_autor||'';
-    document.getElementById('cfg-sobre-final').value=mapa.sobre_final||'';
+    const data=await sbGet('sobre_blocos','order=ordem.asc');
+    const c=document.getElementById('sobrenos-blocos-lista');
+    if(!data.length){c.innerHTML='<div class="vazio">Sem blocos ainda. Adiciona o primeiro!</div>';return;}
+    c.innerHTML=data.map(b=>{
+      const resumo=b.tipo==='citacao'
+        ? `"${(b.texto||'').slice(0,60)}" ${b.autor?'— '+b.autor:''}`
+        : (b.titulo?`${b.titulo}: `:'')+(b.texto||'').slice(0,60);
+      return `<div class="produto-card">
+        <div class="produto-info">
+          <div class="produto-nome">${b.tipo==='citacao'?'💬 Citação':'📄 Parágrafo'}</div>
+          <div class="produto-meta">${resumo}${(b.texto||'').length>60?'...':''} &nbsp;·&nbsp; Ordem: ${b.ordem||''}</div>
+        </div>
+        <div class="produto-acoes">
+          <button class="btn-sm verde" onclick="editarBlocoSobreNos(${b.id})">✏️ Editar</button>
+          <button class="btn-sm vermelho" onclick="eliminarBlocoSobreNos(${b.id})">Eliminar</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function mudarTipoBloco(){
+    const tipo=document.getElementById('fsb-tipo').value;
+    document.getElementById('fsb-titulo-grupo').style.display=tipo==='paragrafo'?'block':'none';
+    document.getElementById('fsb-autor-grupo').style.display=tipo==='citacao'?'block':'none';
+    document.getElementById('fsb-texto-label').textContent=tipo==='citacao'?'Texto da Citação *':'Texto *';
+  }
+
+  function abrirFormBlocoSobreNos(){
+    blocoSobreNosEditandoId=null;
+    document.getElementById('form-bloco-titulo').textContent='➕ Adicionar Bloco';
+    document.getElementById('fsb-tipo').value='paragrafo';
+    ['fsb-ordem','fsb-titulo','fsb-texto','fsb-autor'].forEach(id=>document.getElementById(id).value='');
+    mudarTipoBloco();
+    document.getElementById('fsb-msg').textContent='';
+    document.getElementById('form-bloco').style.display='block';document.getElementById('form-bloco').scrollIntoView({behavior:'smooth'});
+  }
+
+  async function editarBlocoSobreNos(id){
+    const data=await sbGet('sobre_blocos',`id=eq.${id}`);if(!data.length)return;const b=data[0];blocoSobreNosEditandoId=id;
+    document.getElementById('form-bloco-titulo').textContent='✏️ Editar Bloco';
+    document.getElementById('fsb-tipo').value=b.tipo||'paragrafo';
+    document.getElementById('fsb-ordem').value=b.ordem||'';
+    document.getElementById('fsb-titulo').value=b.titulo||'';
+    document.getElementById('fsb-texto').value=b.texto||'';
+    document.getElementById('fsb-autor').value=b.autor||'';
+    mudarTipoBloco();
+    document.getElementById('fsb-msg').textContent='';
+    document.getElementById('form-bloco').style.display='block';document.getElementById('form-bloco').scrollIntoView({behavior:'smooth'});
+  }
+
+  function fecharFormBlocoSobreNos(){document.getElementById('form-bloco').style.display='none';blocoSobreNosEditandoId=null;}
+
+  async function guardarBlocoSobreNos(){
+    const tipo=document.getElementById('fsb-tipo').value;
+    const ordem=parseInt(document.getElementById('fsb-ordem').value)||99;
+    const titulo=document.getElementById('fsb-titulo').value.trim();
+    const texto=document.getElementById('fsb-texto').value.trim();
+    const autor=document.getElementById('fsb-autor').value.trim();
+    const msgEl=document.getElementById('fsb-msg');
+    if(!texto){msgEl.className='msg-err';msgEl.textContent='O texto é obrigatório.';return;}
+    msgEl.className='';msgEl.textContent='A guardar...';
+    const dados={tipo,ordem,texto,titulo:tipo==='paragrafo'?(titulo||null):null,autor:tipo==='citacao'?(autor||null):null};
+    let ok;
+    if(blocoSobreNosEditandoId){ ok=await sbPatch('sobre_blocos',`id=eq.${blocoSobreNosEditandoId}`,dados); }
+    else{ ok=await sbPost('sobre_blocos',dados); }
+    if(ok){msgEl.className='msg-ok';msgEl.textContent='✅ Guardado!';registrarLog(blocoSobreNosEditandoId?'Editar bloco Sobre Nós':'Criar bloco Sobre Nós','Site');setTimeout(()=>{fecharFormBlocoSobreNos();carregarSobreNos();},900);}
+    else{msgEl.className='msg-err';msgEl.textContent='Erro ao guardar.';}
+  }
+
+  async function eliminarBlocoSobreNos(id){
+    if(!confirm('Eliminar este bloco?'))return;
+    await sbDelete('sobre_blocos',`id=eq.${id}`);
+    registrarLog('Eliminar bloco Sobre Nós','Site');
+    carregarSobreNos();
   }
 
   async function guardarConfiguracao(chave,valor){
     const existente=await sbGet('configuracoes',`chave=eq.${chave}`);
     if(existente.length){ return await sbPatch('configuracoes',`chave=eq.${chave}`,{valor}); }
     return await sbPost('configuracoes',{chave,valor});
-  }
-
-  async function guardarSobreNos(){
-    const msgEl=document.getElementById('cfg-sobre-msg');
-    msgEl.className='';msgEl.textContent='A guardar...';
-    try{
-      await Promise.all([
-        guardarConfiguracao('sobre_p1',document.getElementById('cfg-sobre-p1').value.trim()),
-        guardarConfiguracao('sobre_p2',document.getElementById('cfg-sobre-p2').value.trim()),
-        guardarConfiguracao('sobre_p3',document.getElementById('cfg-sobre-p3').value.trim()),
-        guardarConfiguracao('sobre_citacao',document.getElementById('cfg-sobre-citacao').value.trim()),
-        guardarConfiguracao('sobre_autor',document.getElementById('cfg-sobre-autor').value.trim()),
-        guardarConfiguracao('sobre_final',document.getElementById('cfg-sobre-final').value.trim())
-      ]);
-      msgEl.className='msg-ok';msgEl.textContent='✅ Texto actualizado!';
-      registrarLog('Texto "Sobre Nós" actualizado','Site');
-    }catch(e){ msgEl.className='msg-err';msgEl.textContent='Erro ao guardar.'; }
   }
 
   // ── Contactos ──
@@ -1906,6 +2243,7 @@ ROYALTY — Beyond Trends`;
     document.getElementById('cfg-facebook').value=mapa.contacto_facebook||'';
     document.getElementById('cfg-tiktok').value=mapa.contacto_tiktok||'';
   }
+
 
   async function guardarContactos(){
     const msgEl=document.getElementById('cfg-contactos-msg');
