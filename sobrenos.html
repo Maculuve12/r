@@ -190,20 +190,15 @@
 
   /* ===== CORPO ===== */
   .sobre-body{
-    max-width:900px;
+    max-width:640px;
     margin:0 auto;
     padding:60px 6% 80px;
   }
 
-  .sobre-2col{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:64px;
-    margin-bottom:8px;
-  }
-
-  @media (max-width:700px){
-    .sobre-2col{grid-template-columns:1fr; gap:36px;}
+  .sobre-lista{
+    display:flex;
+    flex-direction:column;
+    gap:32px;
   }
 
   .sobre-blk h3{
@@ -218,16 +213,13 @@
     font-size:13px;
     line-height:1.8;
     color:var(--teal-muted);
-    margin-bottom:14px;
   }
 
   .sobre-quote{
-    grid-column:1 / -1;
     background:var(--sage);
     border-left:3px solid var(--gold);
     padding:20px 24px;
     border-radius:0 10px 10px 0;
-    margin:28px 0 8px;
   }
 
   .sobre-quote blockquote{
@@ -245,13 +237,6 @@
     text-transform:uppercase;
     color:var(--green-mid);
     font-style:normal;
-  }
-
-  .sobre-closing{
-    grid-column:1 / -1;
-    margin-top:12px;
-    padding-top:28px;
-    border-top:1px solid var(--border);
   }
 
   /* ===== FOOTER (mesma identidade da loja) ===== */
@@ -354,27 +339,8 @@
 </div>
 
 <div class="sobre-body">
-  <div class="sobre-2col">
-    <div class="sobre-blk">
-      <h3>O Começo</h3>
-      <p id="sobre-p1">A Royalty nasceu em Inhambane em 2024, fruto de uma paixão pelo design autêntico e pelo desejo de estabelecer uma assinatura de alto padrão na moda. Sentindo a necessidade de peças que carregassem uma verdadeira atenção ao acabamento, à precisão da costura e à perfeição do caimento, decidimos desenvolver os nossos próprios modelos.</p>
-      <p id="sobre-p2">Desde o primeiro traço, a Royalty foi concebida para ser o cérebro e a alma por trás de criações exclusivas, supervisionando rigorosamente cada detalhe para garantir que tudo o que leva o nosso nome seja sinónimo de distinção.</p>
-    </div>
-    <div class="sobre-blk">
-      <h3>A Filosofia</h3>
-      <p id="sobre-p3">Para nós, a moda de prestígio não deve ficar presa a tendências passageiras. Acreditamos na intemporalidade. Por isso, criamos roupas focando na pureza da fibra, no peso ideal do tecido e na resistência estrutural das peças, assegurando um padrão premium insuperável.</p>
-      <p>A nossa essência é guiada pela visão de que a excelência deve ser impressa em tudo o que criamos. Como define o nosso fundador, <span id="sobre-autor-inline">Odêncio Maculuve</span>:</p>
-    </div>
-
-    <div class="sobre-quote">
-      <blockquote id="sobre-citacao">"A ROYALTY cresce como um ser vivo: primeiro pensa, depois cria, protege e eterniza."</blockquote>
-      <cite id="sobre-autor">Odêncio Maculuve</cite>
-    </div>
-
-    <div class="sobre-blk sobre-closing">
-      <h3>O Compromisso</h3>
-      <p id="sobre-final">Cada colecção é o resultado de um processo meticuloso de inovação e design, feito para quem não abre mão da sofisticação e de uma identidade visual marcante.</p>
-    </div>
+  <div class="sobre-lista" id="sobre-lista">
+    <div class="sobre-blk"><p>A carregar...</p></div>
   </div>
 </div>
 
@@ -414,27 +380,44 @@
   }
   marcarLinkActivo();
 
-  // ─── Texto "Sobre Nós" (editável no ADM) ───
+  // ─── Texto "Sobre Nós" (blocos editáveis no ADM) ───
   const SB_URL = 'https://zrcnwkrvfkykqnhwoklh.supabase.co';
   const SB_KEY = 'sb_publishable_PX2HcOTmRmbHLDOT5YuKjg_KBNB6aZc';
 
+  function escaparHtml(texto){
+    const div = document.createElement('div');
+    div.textContent = texto;
+    return div.innerHTML;
+  }
+
+  function formatarNegrito(texto){
+    return escaparHtml(texto || '').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  }
+
   function carregarSobreNosPublico(){
-    fetch(`${SB_URL}/rest/v1/configuracoes?chave=in.(sobre_p1,sobre_p2,sobre_p3,sobre_citacao,sobre_autor,sobre_final)&select=chave,valor`, {
+    const lista = document.getElementById('sobre-lista');
+    fetch(`${SB_URL}/rest/v1/sobre_blocos?order=ordem.asc&select=tipo,titulo,texto,autor`, {
       headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
     })
     .then(r => r.json())
     .then(data => {
-      const mapa = {};
-      (data||[]).forEach(c => { if(c.valor) mapa[c.chave] = c.valor; });
-      if(mapa.sobre_p1) document.getElementById('sobre-p1').textContent = mapa.sobre_p1;
-      if(mapa.sobre_p2) document.getElementById('sobre-p2').textContent = mapa.sobre_p2;
-      if(mapa.sobre_p3) document.getElementById('sobre-p3').textContent = mapa.sobre_p3;
-      if(mapa.sobre_citacao) document.getElementById('sobre-citacao').textContent = `"${mapa.sobre_citacao}"`;
-      if(mapa.sobre_autor){
-        document.getElementById('sobre-autor').textContent = mapa.sobre_autor;
-        document.getElementById('sobre-autor-inline').textContent = mapa.sobre_autor;
-      }
-      if(mapa.sobre_final) document.getElementById('sobre-final').textContent = mapa.sobre_final;
+      if(!data || !data.length) return;
+      lista.innerHTML = data.map(b => {
+        if(b.tipo === 'citacao'){
+          return `
+            <div class="sobre-quote">
+              <blockquote>"${formatarNegrito(b.texto)}"</blockquote>
+              ${b.autor ? `<cite>${escaparHtml(b.autor)}</cite>` : ''}
+            </div>
+          `;
+        }
+        return `
+          <div class="sobre-blk">
+            ${b.titulo ? `<h3>${escaparHtml(b.titulo)}</h3>` : ''}
+            <p>${formatarNegrito(b.texto)}</p>
+          </div>
+        `;
+      }).join('');
     })
     .catch(() => {});
   }
